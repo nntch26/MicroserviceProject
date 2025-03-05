@@ -33,23 +33,23 @@ app.get("/", (req, res) => {
 
 
 app.use('/api', require('./routes/productRoutes'));
+app.use('/api', require('./routes/categoryRoutes'));
 
 
+// app.get("/api/hello", (req,res) => {
+//     res.json({ message: "Hello" });
+// });
 
-app.get("/api/hello", (req,res) => {
-    res.json({ message: "Hello" });
-});
-
-// สร้างผู้ใช้ใหม่
-app.post("/users", async (req, res) => {
-    try {
-        const newUser = new User(req.body);
-        await newUser.save();
-        res.status(201).json(newUser);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
+// // สร้างผู้ใช้ใหม่
+// app.post("/users", async (req, res) => {
+//     try {
+//         const newUser = new User(req.body);
+//         await newUser.save();
+//         res.status(201).json(newUser);
+//     } catch (error) {
+//         res.status(400).json({ error: error.message });
+//     }
+// });
 
 
 // Start server

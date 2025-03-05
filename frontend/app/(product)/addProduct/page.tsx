@@ -63,6 +63,7 @@ const AddProduct = () => {
   };
 
   return (
+    <>
     <div className="min-h-screen bg-gray-100 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-lg">
         <div>
@@ -85,8 +86,7 @@ const AddProduct = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter product name"
-              />
+                placeholder="Enter product name" />
             </div>
 
             {/* SKU */}
@@ -102,8 +102,7 @@ const AddProduct = () => {
                 value={sku}
                 onChange={(e) => setSku(e.target.value)}
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter SKU"
-              />
+                placeholder="Enter SKU" />
             </div>
 
             {/* Quantity */}
@@ -119,8 +118,7 @@ const AddProduct = () => {
                 onChange={(e) => setQuantity(Number(e.target.value))}
                 min="0"
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter quantity"
-              />
+                placeholder="Enter quantity" />
             </div>
 
             {/* Category */}
@@ -160,8 +158,7 @@ const AddProduct = () => {
                 min="0"
                 step="0.01"
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter price"
-              />
+                placeholder="Enter price" />
             </div>
           </div>
 
@@ -176,7 +173,7 @@ const AddProduct = () => {
           </div>
         </form>
       </div>
-    </div>
+    </div></>
   );
 };
 

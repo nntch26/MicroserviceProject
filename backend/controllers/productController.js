@@ -36,16 +36,7 @@ exports.addProduct = async (req, res) => {
 };
 
 
-exports.getCategory = async (req, res) => {
-    try {
-        const category = await Category.find()
 
-        res.status(200).json({ status: "success", data: category });
-    } catch (error) {
-        console.log(error.massage)
-        res.status(500).json({ status: "error", message: error.message });
-    }
-}
 
 // ดูรายละเอียดสินค้า แต่ละตัว
 exports.getProduct = async (req, res) => {
