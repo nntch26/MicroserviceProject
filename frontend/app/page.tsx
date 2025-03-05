@@ -5,6 +5,7 @@ import { Navbar } from "./components/Navbar";
 import { Sidebar } from "./components/Sidebar";
 import { Dashboard } from "./components/Dashboard";
 import { AllProducts } from "./pages/AllProducts";
+import { Categories } from "./pages/Categories";
 
 export default function Home() {
   const [activePage, setActivePage] = useState("dashboard");
@@ -13,6 +14,8 @@ export default function Home() {
     switch (activePage) {
       case "all-products":
         return <AllProducts />;
+      case "categories":
+        return <Categories/>
       default:
         return <Dashboard />;
     }
