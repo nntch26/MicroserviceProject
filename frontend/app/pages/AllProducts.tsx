@@ -20,6 +20,7 @@ export function AllProducts() {
 
         <Link href="/addProduct">
           <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 cursor-pointer">
+            <Plus size={20} />
             Add Product
           </button>
         </Link>

@@ -5,7 +5,6 @@ const { addProduct,
         getAllProduct,
         deleteProduct,
         updateProduct ,
-        getCategory
 } = require('../controllers/productController');
 
 

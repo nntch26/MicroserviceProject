@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Plus, Search } from "lucide-react";
 import { CategoryTable } from "../components/CategoryTable";
+
 export function Categories() {
+
   const [searchTerm, setSearchTerm] = useState("");
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -10,7 +13,7 @@ export function Categories() {
           <h1 className="text-2xl font-bold text-gray-800">Categories</h1>
           <p className="text-gray-600 mt-1">Manage product categories</p>
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700">
+        <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700">
           <Plus size={20} />
           Add Category
         </button>
