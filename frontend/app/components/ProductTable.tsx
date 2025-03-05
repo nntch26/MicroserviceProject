@@ -3,6 +3,7 @@ import { Package, Pencil, Trash2, Plus } from "lucide-react";
 interface Product {
   id: number;
   name: string;
+  sku: string;
   category: string;
   price: number;
   stock: number;
@@ -17,46 +18,52 @@ export function ProductTable({
   showActions = false,
 }: ProductTableProps) {
   const products: Product[] = [
-    {
-      id: 1,
-      name: "Wireless Headphones",
-      category: "Electronics",
-      price: 99.99,
-      stock: 45,
-      status: "In Stock",
-    },
-    {
-      id: 2,
-      name: "USB-C Cable",
-      category: "Accessories",
-      price: 14.99,
-      stock: 5,
-      status: "Low Stock",
-    },
-    {
-      id: 3,
-      name: "Bluetooth Speaker",
-      category: "Electronics",
-      price: 79.99,
-      stock: 0,
-      status: "Out of Stock",
-    },
-    {
-      id: 4,
-      name: "Laptop Stand",
-      category: "Accessories",
-      price: 29.99,
-      stock: 23,
-      status: "In Stock",
-    },
-    {
-      id: 5,
-      name: "Wireless Mouse",
-      category: "Electronics",
-      price: 49.99,
-      stock: 8,
-      status: "Low Stock",
-    },
+      {
+          id: 1,
+          name: "Wireless Headphones",
+          sku: "WH123",
+          category: "Electronics",
+          price: 99.99,
+          stock: 45,
+          status: "In Stock",
+      },
+      {
+          id: 2,
+          name: "USB-C Cable",
+          sku: "USBC123",
+          category: "Accessories",
+          price: 14.99,
+          stock: 5,
+          status: "Low Stock",
+      },
+      {
+          id: 3,
+          name: "Bluetooth Speaker",
+          sku: "BS123",
+          category: "Electronics",
+          price: 79.99,
+          stock: 0,
+          status: "Out of Stock",
+      },
+      {
+          id: 4,
+          name: "Laptop Stand",
+          sku: "LS123",
+          category: "Accessories",
+          price: 29.99,
+          stock: 23,
+          status: "In Stock",
+      },
+      {
+          id: 5,
+          name: "Wireless Mouse",
+          sku: "WM123",
+          category: "Electronics",
+          price: 49.99,
+          stock: 8,
+          status: "Low Stock",
+      }
+  
   ];
   const displayedProducts = limit ? products.slice(0, limit) : products;
   const getStatusColor = (status: string) => {
@@ -136,6 +143,9 @@ export function ProductTable({
                     </div>
                   </div>
                 </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <div className="text-sm text-gray-900">{product.sku}</div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">{product.category}</div>
