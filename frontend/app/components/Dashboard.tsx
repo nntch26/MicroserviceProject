@@ -1,6 +1,8 @@
 import React from "react";
 import { ProductSummary } from "./ProductSummary";
 import { RecentActivity } from "./RecentActivity";
+
+
 export function Dashboard() {
   return (
     <div className="space-y-6">

@@ -4,10 +4,13 @@ interface NavbarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
 }
+
+
 export function Navbar({
   sidebarOpen,
   setSidebarOpen
 }: NavbarProps) {
+
   return (
   <header className="bg-white border-b border-gray-200 shadow-sm">
       <div className="flex items-center justify-between px-4 py-3">
@@ -27,10 +30,10 @@ export function Navbar({
             </h1>
           </div>
         </div>
-        <div className="hidden md:flex items-center relative mx-4 flex-1 max-w-md">
+        {/* <div className="hidden md:flex items-center relative mx-4 flex-1 max-w-md">
           <Search size={18} className="absolute left-3 text-gray-400" />
           <input type="text" placeholder="Search inventory..." className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
-        </div>
+        </div> */}
         <div className="flex items-center gap-3">
           <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
             <Bell size={20} />

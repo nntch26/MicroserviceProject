@@ -10,7 +10,7 @@ export function Sidebar({
   setActivePage,
   sidebarOpen
 }: SidebarProps) {
-  const [expandedCategories, setExpandedCategories] = useState({
+  const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({
     products: true,
     reports: false,
     settings: false

@@ -1,4 +1,6 @@
 import React from "react";
+
+
 export function RecentActivity() {
   const activities = [{
     id: 1,
