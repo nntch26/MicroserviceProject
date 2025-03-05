@@ -106,7 +106,7 @@ export function Sidebar({
           </div> */}
           <div className="pt-4 mt-4 border-t border-gray-700">
             <a href="#" className={`flex items-center px-4 py-3 rounded-md ${activePage === "settings" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("settings")}>
-              <Settings size={20} className="mr-3" />
+              {/* <Settings size={20} className="mr-3" /> */}
               <span>logout</span>
             </a>
           </div>
