@@ -26,7 +26,7 @@ exports.addProduct = async (req, res) => {
         await newProduct.save();
 
         res.status(201).json({ message: 'เพิ่มสินค้าเรียบร้อย', product: newProduct });
-        
+
     } catch (error) {
         console.log(error.massage)
         res.status(500).json({ status: "error", 
@@ -88,25 +88,22 @@ exports.updateProduct = async (req, res) => {
         const { id } = req.params;  
         const { name, sku, quantity, category, price, expiration_date, status } = req.body;
 
-        // ตรวจสอบว่าสินค้า SKU นี้มีอยู่แล้วหรือป่าว
-        const getProduct = await Product.findOne({ id });
-        if (getProduct) {
-            return res.status(400).json({ message: 'SKU นี้มีอยู่แล้ว' });
-        }
+        console.log("id ->",id)
 
         // อัปเเดตข้อมูลสินค้า
         const updateProduct = await Product.findByIdAndUpdate(
             id,
             {
-                name,
-                sku,
-                quantity,
-                category,
-                price,
-                expiration_date,
-                status,
-                last_updated: Date.now()  // อัปเดตเวลาการแก้ไข
+                ...(name && { name }),
+                ...(sku && { sku }),
+                ...(quantity && { quantity }),
+                ...(category && { category }),
+                ...(price && { price }),
+                ...(expiration_date && { expiration_date }),
+                ...(status && { status }),
+                last_updated: Date.now() // อัปเดตเวลาการแก้ไข
             },
+            { new: true, runValidators: true } // คืนค่าที่อัปเดตและตรวจสอบ validation
         )
 
         if(!updateProduct){
@@ -132,6 +129,30 @@ exports.updateProduct = async (req, res) => {
 
 // ลบสินค้า
 exports.deleteProduct = async (req, res) => {
+
+    try{
+        const { id } = req.params
+        console.log("Product ID:", id);
+
+        const deleteProduct = await Product.findByIdAndDelete(id)
+        if(!deleteProduct){
+            res.status(404).json({
+                status:"error",
+                massage:"ไม่พบข้อมูลสินค้าที่ต้องการลบ"
+            })
+        }
+
+        res.status(200).json({
+            status:"success",
+            // data: deleteProduct
+        })
+
+
+
+    }catch(error){
+        console.log(error.massage)
+        res.status(500).json({ status: "error", message: error.message });
+    }
    
 };
 
