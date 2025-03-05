@@ -1,7 +1,13 @@
 import React from "react";
 import { ProductSummary } from "./ProductSummary";
 import { ProductTable } from "./ProductTable";
+
+
 export function Dashboard() {
+  function setActivePage(arg0: string): void {
+    throw new Error("Function not implemented.");
+  }
+
 return (
     <div className="space-y-6">
     <div>

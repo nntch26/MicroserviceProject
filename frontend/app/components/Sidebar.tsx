@@ -74,20 +74,20 @@ export function Sidebar({
                 </a>
               </div>}
           </div>
-          <a href="#" className={`flex items-center px-4 py-3 rounded-md ${activePage === "orders" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("orders")}>
+          {/* <a href="#" className={`flex items-center px-4 py-3 rounded-md ${activePage === "orders" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("orders")}>
             <ShoppingCart size={20} className="mr-3" />
             <span>Orders</span>
-          </a>
-          <a href="#" className={`flex items-center px-4 py-3 rounded-md ${activePage === "suppliers" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("suppliers")}>
+          </a> */}
+          {/* <a href="#" className={`flex items-center px-4 py-3 rounded-md ${activePage === "suppliers" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("suppliers")}>
             <Truck size={20} className="mr-3" />
             <span>Suppliers</span>
-          </a>
-          <a href="#" className={`flex items-center px-4 py-3 rounded-md ${activePage === "customers" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("customers")}>
+          </a> */}
+          {/* <a href="#" className={`flex items-center px-4 py-3 rounded-md ${activePage === "customers" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("customers")}>
             <Users size={20} className="mr-3" />
             <span>Customers</span>
-          </a>
+          </a> */}
           {/* Reports Category */}
-          <div>
+          {/* <div>
             <button className="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 rounded-md" onClick={() => toggleCategory("reports")}>
               <div className="flex items-center">
                 <BarChart2 size={20} className="mr-3" />
@@ -103,15 +103,11 @@ export function Sidebar({
                   <span>Inventory Report</span>
                 </a>
               </div>}
-          </div>
+          </div> */}
           <div className="pt-4 mt-4 border-t border-gray-700">
             <a href="#" className={`flex items-center px-4 py-3 rounded-md ${activePage === "settings" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("settings")}>
               <Settings size={20} className="mr-3" />
-              <span>Settings</span>
-            </a>
-            <a href="#" className={`flex items-center px-4 py-3 rounded-md ${activePage === "help" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("help")}>
-              <HelpCircle size={20} className="mr-3" />
-              <span>Help & Support</span>
+              <span>logout</span>
             </a>
           </div>
         </nav>
