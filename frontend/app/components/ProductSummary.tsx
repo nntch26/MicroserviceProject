@@ -1,5 +1,7 @@
 import React from "react";
 import { Package, AlertCircle, AlertTriangle, Tag } from "lucide-react";
+
+
 export function ProductSummary() {
   return <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <SummaryCard title="Total Products" value="1,284" icon={<Package size={24} className="text-blue-600" />} change="+12%" positive={true} />
@@ -8,6 +10,8 @@ export function ProductSummary() {
       <SummaryCard title="Categories" value="32" icon={<Tag size={24} className="text-green-600" />} change="0%" positive={true} />
     </div>;
 }
+
+
 interface SummaryCardProps {
   title: string;
   value: string;
@@ -15,6 +19,8 @@ interface SummaryCardProps {
   change: string;
   positive: boolean;
 }
+
+
 function SummaryCard({
   title,
   value,
@@ -22,6 +28,8 @@ function SummaryCard({
   change,
   positive
 }: SummaryCardProps) {
+
+  
   return <div className="bg-white rounded-lg shadow p-6">
       <div className="flex justify-between items-start">
         <div>
