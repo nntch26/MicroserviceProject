@@ -4,7 +4,7 @@ const Category = require('../models/Category');
 // เพิ่มสินค้าใหม่
 exports.addProduct = async (req, res) => {
     try {
-        const { name, sku, quantity, category, price, expiration_date } = req.body;
+        const { name, sku, quantity, category, price } = req.body;
 
         // ตรวจสอบว่าสินค้า SKU นี้มีอยู่แล้วหรือป่าว
         const getProduct = await Product.findOne({ sku });
@@ -86,7 +86,7 @@ exports.updateProduct = async (req, res) => {
 
     try{
         const { id } = req.params;  
-        const { name, sku, quantity, category, price, expiration_date, status } = req.body;
+        const { name, sku, quantity, category, price, status } = req.body;
 
         console.log("id ->",id)
 
@@ -99,7 +99,6 @@ exports.updateProduct = async (req, res) => {
                 ...(quantity && { quantity }),
                 ...(category && { category }),
                 ...(price && { price }),
-                ...(expiration_date && { expiration_date }),
                 ...(status && { status }),
                 last_updated: Date.now() // อัปเดตเวลาการแก้ไข
             },

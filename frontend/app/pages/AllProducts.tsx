@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Plus, Search } from "lucide-react";
 import { ProductTable } from "../components/ProductTable";
+import Link from 'next/link';
 
 
 export function AllProducts() {
@@ -14,12 +15,16 @@ export function AllProducts() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-2xl font-bold text-gray-800">All Products</h1>
-          <p className="text-gray-600 mt-1">Manage your product inventory</p>
+          {/* <p className="text-gray-600 mt-1">Manage your product inventory</p> */}
         </div>
-        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-blue-700">
-          <Plus size={20} />
-          Add Product
-        </button>
+
+        <Link href="/addProduct">
+          <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 cursor-pointer">
+            Add Product
+          </button>
+        </Link>
+
+        
       </div>
       <div className="bg-white rounded-lg shadow">
         <div className="p-6 border-b border-gray-200">

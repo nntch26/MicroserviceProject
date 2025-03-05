@@ -29,7 +29,7 @@ const ProductSchema = new mongoose.Schema({
         required: true 
     },
     
-    expiration_date: { type: Date }, //วันหมดอายุ
+    // expiration_date: { type: Date }, //วันหมดอายุ
 
     status: { 
         type: String, 
