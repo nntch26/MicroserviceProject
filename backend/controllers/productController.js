@@ -26,7 +26,9 @@ exports.addProduct = async (req, res) => {
         await newProduct.save();
 
         res.status(201).json({ message: 'เพิ่มสินค้าเรียบร้อย', product: newProduct });
+        
     } catch (error) {
+        console.log(error.massage)
         res.status(500).json({ status: "error", 
             message: "เกิดข้อผิดพลาด  ", error
         });
@@ -51,6 +53,7 @@ exports.getProduct = async (req, res) => {
         res.status(200).json({ status: "success", data: product });
 
     } catch (error) {
+        console.log(error.massage)
         res.status(500).json({ status: "error", message: error.message });
     }
 };
@@ -69,6 +72,7 @@ exports.getAllProduct = async (req, res) => {
         res.status(200).json({ status: "success", data: product });
 
     } catch (error) {
+        console.log(error.massage)
         res.status(500).json({ status: "error", message: error.message });
     }
 };
@@ -90,9 +94,37 @@ exports.updateProduct = async (req, res) => {
             return res.status(400).json({ message: 'SKU นี้มีอยู่แล้ว' });
         }
 
+        // อัปเเดตข้อมูลสินค้า
+        const updateProduct = await Product.findByIdAndUpdate(
+            id,
+            {
+                name,
+                sku,
+                quantity,
+                category,
+                price,
+                expiration_date,
+                status,
+                last_updated: Date.now()  // อัปเดตเวลาการแก้ไข
+            },
+        )
+
+        if(!updateProduct){
+            res.status(404).json({
+                status:"error",
+                massage:"ไม่พบข้อมูลสินค้าที่ต้องการแก้ไข"
+            })
+        }
+
+        res.status(200).json({
+            status:"success",
+            data: updateProduct
+        })
+
 
 
     }catch(error){
+        console.log(error.massage)
         res.status(500).json({ status: "error", message: error.message });
     }
     
