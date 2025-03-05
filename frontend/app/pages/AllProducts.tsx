@@ -2,8 +2,13 @@
 import React, { useState } from "react";
 import { Plus, Search } from "lucide-react";
 import { ProductTable } from "../components/ProductTable";
+
+
 export function AllProducts() {
   const [searchTerm, setSearchTerm] = useState("");
+
+
+  
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">

@@ -16,6 +16,8 @@ export default function Home() {
         return <Dashboard />;
     }
   };
+
+  
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       <Navbar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />

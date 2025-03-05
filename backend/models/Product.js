@@ -33,7 +33,7 @@ const ProductSchema = new mongoose.Schema({
 
     status: { 
         type: String, 
-        enum: ['available', 'out of stock'], default: 'available' 
+        enum: ['Out of Stock', 'Low Stock', 'In Stock'], default: 'In Stock' 
     }, //สถานะสินค้า
 
     last_updated: { 

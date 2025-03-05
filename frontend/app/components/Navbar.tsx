@@ -46,7 +46,7 @@ export function Navbar({
               <User size={16} className="text-gray-600" />
             </div>
             <span className="hidden md:inline text-sm font-medium text-gray-700">
-              Admin User
+              User
             </span>
           </div>
         </div>
