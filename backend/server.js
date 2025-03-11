@@ -2,25 +2,11 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const { createProxyMiddleware } = require("http-proxy-middleware");
-const { spawn } = require("child_process");  // ใช้ module นี้เพื่อรัน process อื่นๆ
 
 dotenv.config();
 const app = express();
-const port = 8002;
+const port = process.env.PORT || 8080;
 
-// รัน index.js ของ Product Service
-const productService = spawn('node', ['index.js'], {
-  cwd: '/Services/inventoryservice/index.js',  // แก้ไขให้ตรงกับที่เก็บไฟล์ productservice
-  stdio: 'inherit'  // ให้แสดงผลลัพธ์ใน Terminal เดียวกัน
-});
-
-productService.on('error', (err) => {
-  console.error("Error while starting Product Service:", err);
-});
-
-productService.on('exit', (code) => {
-  console.log(`Product Service exited with code ${code}`);
-});
 
 // กำหนด CORS และ middleware อื่นๆ
 app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
