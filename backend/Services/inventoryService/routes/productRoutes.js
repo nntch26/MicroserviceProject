@@ -5,7 +5,7 @@ const { addProduct,
         getAllProduct,
         deleteProduct,
         updateProduct ,
-} = require('../Services/inventoryService/controllers/productController');
+} = require('../controllers/productController');
 
 
 

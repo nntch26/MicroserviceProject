@@ -4,8 +4,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"node server.js\" \"node product-service/src/app.js\"",
-    "dev": "concurrently \"nodemon server.js\" \"nodemon product-service/src/app.js\""
+    "start": "concurrently \"nodemon server.js\" \"nodemon app.js\"",
+    "dev": "concurrently \"nodemon server.js\" \"nodemon app.js\""
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "mongoose": "^8.12.1"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
     "nodemon": "^3.1.9"
   }
 }

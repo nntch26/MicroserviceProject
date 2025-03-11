@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const productRoutes = require('./routes/productRoutes');
-const connectDB = require("../config/db");
+const connectDB = require("../../config/db");
 
 const app = express();
 
@@ -12,8 +12,8 @@ app.use(express.json());
 // Connect to MongoDB
 connectDB();
 
-// Health check endpoint
-app.get('/health', (req, res) => {
+// check endpoint
+app.get('/', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Product Service is running' });
 });
 
@@ -22,6 +22,7 @@ app.use('/products', productRoutes);
 
 
 const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
   console.log(`Product Service is running on port ${PORT}`);
 });
