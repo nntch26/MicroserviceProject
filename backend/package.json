@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"nodemon server.js\" \"nodemon Services/inventoryservice/index.js\""
+    "start": "concurrently \"nodemon server.js\" \"nodemon Services/inventoryservice/index.js\" \"nodemon Services/alertservice/index.js\""
   },
   "author": "",
   "license": "ISC",

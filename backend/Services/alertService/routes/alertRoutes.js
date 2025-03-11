@@ -1,11 +1,12 @@
-// routes/categoryRoutes.js
+
 const express = require('express');
 const router = express.Router();
+const nodemailer = require('nodemailer');
 
-const { getCategory } = require('../controllers/categoryController');
+const { sendEmail } = require('../controllers/alertController');
 
 // ตรวจสอบว่าเส้นทางนี้ถูกต้อง
-router.get('/categories', getCategory);
+router.post('/email', sendEmail);
 
 
 module.exports = router;

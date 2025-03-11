@@ -3,6 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const productRoutes = require('./routes/productRoutes');
+const categoryRoutes = require('./routes/categoryRoutes')
 const connectDB = require("../../config/db");
 
 const app = express();
@@ -21,7 +22,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/products', productRoutes);
-
+app.use('/categories', categoryRoutes);
 
 const PORT = process.env.PORT || 3001;
 
