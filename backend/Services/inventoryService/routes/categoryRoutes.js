@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 
-const { getCategory } = require('../controllers/categoryController');
+const { getCategory } = require('../Services/inventoryService/controllers/categoryController');
 
 // ตรวจสอบว่าเส้นทางนี้ถูกต้อง
 router.get('/categories/', getCategory);

@@ -1,3 +1,5 @@
+//server.js
+
 const express = require("express");
 const connectDB = require("./config/db");
 const dotenv = require("dotenv");
@@ -27,6 +29,10 @@ app.get("/", (req, res) => {
     res.send("Hello World, Backend API");
 });
 
+// Routes
+const PRODUCT_SERVICE_URL = process.env.PRODUCT_SERVICE_URL || 'http://localhost:3001';
+
+  
 
 app.use('/api', require('./routes/productRoutes'));
 app.use('/api', require('./routes/categoryRoutes'));
