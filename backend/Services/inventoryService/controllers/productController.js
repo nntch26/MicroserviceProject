@@ -45,6 +45,8 @@ exports.getProduct = async (req, res) => {
         // ค้นหาข้อมูลจาก sku
         const product = await Product.findOne({ sku }).populate('category', 'name') 
 
+        console.log("getProduct",product)
+
         if (!product) return res.status(404).json(
             { status: "error", 
             message: "Product not found" 
@@ -64,6 +66,8 @@ exports.getAllProduct = async (req, res) => {
     try {
         
         const product = await Product.find().populate('category', 'name'); 
+
+        console.log("getAllProduct",product)
 
         if (!product || product.length === 0) {
             return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
