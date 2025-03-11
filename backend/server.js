@@ -4,38 +4,25 @@ const express = require("express");
 const connectDB = require("./config/db");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const bodyParse = require("body-parser");
-
-const app = express()
-app.use(express.json());
-
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 dotenv.config();
-const port = process.env.PORT;
+const app = express();
+const port = process.env.PORT || 8080;
 
 // Connect to MongoDB
 connectDB();
 
-app.use(bodyParse.json())
-app.use(
-    cors({
-        credentials: true,
-        origin: ["http://localhost:3000"],
-    })
-);
+app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
+app.use(express.json());
 
-// Routes
+// Proxy API ไปที่ Product Service
+const PRODUCT_SERVICE_URL = process.env.PRODUCT_SERVICE_URL || "http://localhost:3001";
+app.use("/api/products", createProxyMiddleware({ target: PRODUCT_SERVICE_URL, changeOrigin: true }));
+
 app.get("/", (req, res) => {
-    res.send("Hello World, Backend API");
+  res.send("Hello World, Backend API");
 });
-
-// Routes
-const PRODUCT_SERVICE_URL = process.env.PRODUCT_SERVICE_URL || 'http://localhost:3001';
-
-  
-
-app.use('/api', require('./routes/productRoutes'));
-app.use('/api', require('./routes/categoryRoutes'));
 
 
 // Start server
