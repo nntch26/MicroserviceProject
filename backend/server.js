@@ -13,7 +13,6 @@ app.use(cors({ credentials: true, origin: ["http://localhost:3000"] }));
 app.use(express.json());
 
 // Proxy API ไปที่ Product Service
-const PRODUCT_SERVICE_URL = process.env.PRODUCT_SERVICE_URL || "http://localhost:3001";
 app.use("/api/products", createProxyMiddleware({ target: PRODUCT_SERVICE_URL, changeOrigin: true }));
 
 // Check route
