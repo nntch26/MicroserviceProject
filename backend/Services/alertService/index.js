@@ -20,12 +20,12 @@ app.use(express.json());
 connectDB();
 
 // check endpoint
-app.get('/', (req, res) => {
+app.get('/endpoint', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'Alert Service is running' });
 });
 
 // Routes
-app.use('api/alert', alertRoutes);
+app.use('/api/alert', alertRoutes);
 
 
 const PORT = 3002;

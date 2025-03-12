@@ -54,24 +54,22 @@ exports.addInventory = async (req, res) => {
 
 // อัปเดตจำนวนสินค้าคงคลัง
 exports.updateInventory = async (req, res) => {
-  try {
-    const { quantity } = req.body;
-
-    const inventory = await Inventory.findById(req.params.id);
-    if (!inventory) {
-      return res.status(404).json({ message: "Inventory not found" });
+    try {
+      const { quantity } = req.body;
+      const inventory = await Inventory.findById(req.params.id);
+  
+      if (!inventory) return res.status(404).json({ message: "Inventory not found" });
+  
+      inventory.quantity = quantity;
+      inventory.status = quantity === 0 ? "out_of_stock" : quantity < 5 ? "low_stock" : "in_stock";
+      inventory.last_updated = Date.now();
+  
+      await inventory.save();
+      res.json({ message: "Inventory updated", inventory });
+  
+    } catch (error) {
+      res.status(500).json({ message: error.message });
     }
-
-    inventory.quantity_in_stock = quantity;
-    inventory.status = quantity > 0 ? "in_stock" : "out_of_stock";
-    inventory.updated_at = Date.now();
-
-    await inventory.save();
-    res.status(200).json({ message: "Inventory updated successfully", inventory });
-
-  } catch (error) {
-    res.status(500).json({ message: "Error updating inventory", error: error.message });
-  }
 };
 
 // ลบสินค้าออกจากคลัง

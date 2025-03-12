@@ -4,22 +4,20 @@ const Category = require('../models/Category');
 // เพิ่มสินค้าใหม่
 exports.addProduct = async (req, res) => {
     try {
-        const { name, sku, quantity, category, price } = req.body;
+        const { name, code, category, price } = req.body;
 
         // ตรวจสอบว่าสินค้า SKU นี้มีอยู่แล้วหรือป่าว
-        const getProduct = await Product.findOne({ sku });
+        const getProduct = await Product.findOne({ code });
         if (getProduct) {
-            return res.status(400).json({ message: 'SKU นี้มีอยู่แล้ว' });
+            return res.status(400).json({ message: 'Code นี้มีอยู่แล้ว' });
         }
 
         // สร้างสินค้าใหม่
         const newProduct = new Product({
             name,
-            sku,
-            quantity,
+            code,
             category,
             price,
-            expiration_date,
         });
 
         // บันทึกลงฐานข้อมูล

@@ -21,8 +21,8 @@ app.get('/endpoint', (req, res) => {
 });
 
 // Routes
-app.use('api/products', productRoutes);
-app.use('api/categories', categoryRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/categories', categoryRoutes);
 
 const PORT = 3001;
 
