@@ -45,9 +45,9 @@ exports.addProduct = async (req, res) => {
 // ดูรายละเอียดสินค้า แต่ละตัว
 exports.getProduct = async (req, res) => {
     try {
-        const { code } = req.params;
+        const { id } = req.params;
         // ค้นหาข้อมูลจาก code
-        const product = await Product.findOne({ code }).populate('category', 'name') 
+        const product = await Product.findOne(id).populate('category', 'name') 
 
         console.log("getProduct",product)
 
