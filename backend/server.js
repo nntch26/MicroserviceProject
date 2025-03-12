@@ -19,6 +19,12 @@ app.use("/api/products", createProxyMiddleware({ target: PRODUCT_SERVICE_URL, ch
 const ALERT_SERVICE_URL = "http://localhost:3002";
 app.use("/api/alerts", createProxyMiddleware({ target: ALERT_SERVICE_URL, changeOrigin: true}));
 
+const INVENTORY_SERVICE_URL = "http://localhost:3003";
+app.use("/api/inventory", createProxyMiddleware({ target: INVENTORY_SERVICE_URL, changeOrigin: true}));
+
+
+
+
 // Check route
 app.get("/", (req, res) => {
   res.send("Hello World, Backend API");

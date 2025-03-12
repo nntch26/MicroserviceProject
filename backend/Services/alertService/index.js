@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 });
 
 // Routes
-app.use('/alert', alertRoutes);
+app.use('api/alert', alertRoutes);
 
 
 const PORT = 3002;

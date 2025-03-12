@@ -2,8 +2,7 @@
 
 const express = require('express');
 const cors = require('cors');
-const productRoutes = require('./routes/productRoutes');
-const categoryRoutes = require('./routes/categoryRoutes')
+const inventoryRoutes = require('./routes/inventoryRoutes');
 const connectDB = require("../../config/db");
 
 const app = express();
@@ -17,17 +16,16 @@ connectDB();
 
 // check endpoint
 app.get('/endpoint', (req, res) => {
-  res.status(200).json({ status: 'OK', message: 'Product Service is running' });
+  res.status(200).json({ status: 'OK', message: 'inventory Service is running' });
 });
 
 // Routes
-app.use('api/products', productRoutes);
-app.use('api/categories', categoryRoutes);
+app.use('api/inventory', inventoryRoutes);
 
-const PORT = 3001;
+const PORT = 3003;
 
 app.listen(PORT, () => {
-  console.log(`Product Service is running on port ${PORT}`);
+  console.log(`Inventory Service is running on port ${PORT}`);
 });
 
 module.exports = app;
