@@ -6,61 +6,108 @@ const axios = require("axios"); // แต่ละบริการสื่อ
 // ดึงสินค้าคงคลังทั้งหมด
 exports.getAllInventory = async (req, res) => {
   try {
-    const inventory = await Inventory.find().populate("product");
-    console.log(inventory);
-    res.status(200).json(inventory);
+    // const inventory = await Inventory.find().populate("product");
+
+    const inventory = await Inventory.find(); // ดึงข้อมูล Inventory ทั้งหมด
+
+    
+
+    // ดึงข้อมูลสินค้าจาก ProductService ทีละตัว
+    const getAllinventory = await Promise.all(
+      inventory.map(async (item) => {
+        try {
+          const productData = await axios.get(`http://localhost:3001/api/products/${item.product}`);
+          return {
+            ...item._doc,
+            product: productData.data, // เพิ่มข้อมูล product เข้าไป
+          };
+        } catch (error) {
+          return {
+            ...item._doc,
+            product: null, // กรณีดึงไม่ได้ ให้ใส่ null
+          };
+        }
+      })
+    );
+   
+
+    console.log(getAllinventory);
+    res.status(200).json(getAllinventory);
 
   } catch (error) {
     res.status(500).json({ message: "Error fetching inventory", error: error.message });
   }
 };
+
+
 
 // ดึงสินค้าคงคลังตาม ID
 exports.getInventoryById = async (req, res) => {
   try {
-    const inventory = await Inventory.findById(req.params.id).populate("product");
+    // ค้นหา Inventory ตาม ID
+    const inventory = await Inventory.findById(req.params.id);
+
     if (!inventory) {
-      return res.status(404).json({ message: "Inventory not found" });
+      return res.status(404).json({ message: "ไม่พบข้อมูล Inventory" });
     }
-    res.status(200).json(inventory);
+
+    // ตรวจสอบว่า inventory มี product หรือไม่
+    if (inventory.product) {
+      try {
+        const getproductData = await axios.get(`http://localhost:3001/api/products/${inventory.product}`);
+        productData = getproductData.data; // ดึงข้อมูลสินค้า
+
+      } catch (error) {
+        console.error(`Error fetching product ${inventory.product}:`, error.message);
+        productData = { error: "Product not found or service unavailable" }; // ข้อผิดพลาด
+      }
+    }
+
+
+
+    // รวมข้อมูล Inventory และ Product
+    const getinventory = {
+      ...inventory._doc,
+      product: productData, // แทนที่ product ID ด้วยข้อมูลจริง
+    };
+
+    res.status(200).json(getinventory);
+
+
   } catch (error) {
     res.status(500).json({ message: "Error fetching inventory", error: error.message });
   }
 };
 
+
+// เพิ่ม Inventory
 exports.addInventory = async (req, res) => {
   try {
     const { productId, quantity } = req.body;
     console.log("Received productId:", productId, "Quantity:", quantity);
     
     // เรียกใช้ API ของ ProductService เพื่อตรวจสอบสินค้า
-    try {
-      const productResponse = await axios.get(`http://localhost:3001/api/products/${productId}`);
-      const product = productResponse.data;
+    const productResponse = await axios.get(`http://localhost:3001/api/products/${productId}`);
+    const product = productResponse.data;
 
-      if (!product) {
-        return res.status(404).json({ message: "Product not found" });
-      }
-      
-      // คำนวณสถานะ
-      const status = quantity > 0 ? "in_stock" : "out_of_stock";
-      
-      const newInventory = new Inventory({
-        product: productId,
-        quantity_in_stock: quantity,
-        status: status
-      });
-      
-      await newInventory.save();
-      
-      res.status(201).json({ message: "Inventory added successfully", inventory: newInventory });
-    } catch (productError) {
-      // ถ้าไม่พบสินค้า
-      if (productError.response && productError.response.status === 404) {
-        return res.status(404).json({ message: "Product not found" });
-      }
-      throw productError; // ส่งต่อข้อผิดพลาดไป catch ด้านนอก
+    // ถ้าไม่พบสินค้า
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
     }
+    
+    // คำนวณสถานะ
+    const status = quantity > 0 ? "in_stock" : "out_of_stock";
+    
+    const newInventory = new Inventory({
+      product: productId,
+      quantity_in_stock: quantity,
+      status: status
+    });
+    
+    await newInventory.save();
+    
+    res.status(201).json({ message: "Inventory เพิ่มข้อมูลสำเร็จ!", inventory: newInventory });
+
     
   } catch (error) {
     console.error("Error in addInventory:", error);
