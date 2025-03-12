@@ -1,6 +1,24 @@
 const nodemailer = require('nodemailer');
 const Alert = require('../models/alertModel'); // import model Alert
 
+
+// ดึงแจ้งเตือนสินค้าทั้งหมด
+exports.getAllAlerts = async (req, res) => {
+    try {
+        const query = {};
+        if (req.query.code) {
+            query.code = req.query.code; // ค้นหาตามรหัสสินค้า
+        }
+
+        const alerts = await Alert.find(query).sort({ createdAt: -1 });
+        res.status(200).json(alerts);
+    } catch (error) {
+        console.error('❌ Error fetching alerts:', error);
+        res.status(500).json({ message: "Failed to fetch alerts" });
+    }
+};
+
+//ส่งเมล
 const sendMail = async (mail, message) => {
     try {
         const transporter = nodemailer.createTransport({
