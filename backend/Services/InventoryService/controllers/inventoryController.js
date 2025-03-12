@@ -87,8 +87,9 @@ exports.addInventory = async (req, res) => {
     console.log("Received productId:", productId, "Quantity:", quantity);
     
     // เรียกใช้ API ของ ProductService เพื่อตรวจสอบสินค้า
-    const productResponse = await axios.get(`http://localhost:3001/api/products/${productId}`);
-    const product = productResponse.data;
+    // const productResponse = await axios.get(`http://localhost:3001/api/products/${productId}`);
+    // const product = productResponse.data;
+    const product = await Inventory.findOne({ product: productId });
 
     // ถ้าไม่พบสินค้า
     if (!product) {

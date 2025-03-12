@@ -3,6 +3,7 @@
 const express = require('express');
 const cors = require('cors');
 const inventoryRoutes = require('./routes/inventoryRoutes');
+const inventoryMoveRoutes = require('./routes/inventoryMoveRoutes');
 // const connectDB = require("../../config/db");
 const mongoose = require("mongoose");
 
@@ -38,6 +39,7 @@ app.get('/endpoint', (req, res) => {
 
 // Routes
 app.use('/api/inventory', inventoryRoutes);
+app.use('/api/inventoryMove', inventoryMoveRoutes);
 
 const PORT = 3003;
 
