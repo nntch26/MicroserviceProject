@@ -5,7 +5,9 @@ const Product = require("../../ProductService/models/Product");
 exports.getAllInventory = async (req, res) => {
   try {
     const inventory = await Inventory.find().populate("product");
+    console.log(inventory);
     res.status(200).json(inventory);
+    
   } catch (error) {
     res.status(500).json({ message: "Error fetching inventory", error: error.message });
   }

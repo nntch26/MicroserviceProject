@@ -3,20 +3,30 @@
 const express = require('express');
 const cors = require('cors');
 const alertRoutes = require('./routes/alertRoutes');
-const connectDB = require("../../config/db");
+// const connectDB = require("../../config/db");
 const nodemailer = require('nodemailer');
+const mongoose = require("mongoose");
 
 const app = express();
 
 // Middleware
-app.use(cors({
-    origin: "*", 
-    methods: "GET,POST,PUT,DELETE",
-    allowedHeaders: "Content-Type,Authorization"
-  }));
+app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
+MONGO_URL="mongodb://localhost:27017/alertdb" // ชื่อฐานข้อมูล
+
+const connectDB = async () => {
+  try {
+      const conn = await mongoose.connect(MONGO_URL);
+      console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+      
+  } catch (error) {
+      console.error(`❌ MongoDB Connection Error: ${error.message}`);
+      process.exit(1);
+  }
+};
+
 connectDB();
 
 // check endpoint

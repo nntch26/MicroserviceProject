@@ -3,7 +3,8 @@
 const express = require('express');
 const cors = require('cors');
 const inventoryRoutes = require('./routes/inventoryRoutes');
-const connectDB = require("../../config/db");
+// const connectDB = require("../../config/db");
+const mongoose = require("mongoose");
 
 const app = express();
 
@@ -12,6 +13,19 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB
+MONGO_URL="mongodb://localhost:27017/inventorydb" // ชื่อฐานข้อมูล
+
+const connectDB = async () => {
+  try {
+      const conn = await mongoose.connect(MONGO_URL);
+      console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+      
+  } catch (error) {
+      console.error(`❌ MongoDB Connection Error: ${error.message}`);
+      process.exit(1);
+  }
+};
+
 connectDB();
 
 // check endpoint
