@@ -11,7 +11,7 @@ const alertSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    sku: {
+    code: {
         type: String,
         required: true
     },
