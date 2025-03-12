@@ -30,6 +30,8 @@ exports.getAllInventory = async (req, res) => {
       })
     );
    
+    // เรียกใช้ฟังก์ชันแจ้งเตือนสินค้าคงคลังต่ำ
+    sendLowStockAlerts(getAllinventory);
 
     console.log(getAllinventory);
     res.status(200).json(getAllinventory);
@@ -153,4 +155,39 @@ exports.deleteInventory = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error deleting inventory", error: error.message });
   }
+};
+
+const checkAlertExists = async (code) => {
+  try {
+    const response = await axios.get(`http://localhost:3002/api/alert/getstock?code=${code}`);
+    return response.data.length > 0; // ถ้ามี alert อยู่แล้ว return true
+  } catch (error) {
+    console.error(`❌ Failed to check alert for product ${code}:`, error.message);
+    return false; // ถ้ามีข้อผิดพลาดให้ return false
+  }
+};
+
+// ฟังก์ชันแจ้งเตือนสินค้าคงคลังต่ำ
+const sendLowStockAlerts = async (inventoryList) => {
+  const lowStockItems = inventoryList.filter((item) => item.quantity_in_stock < 6);
+
+  await Promise.all(
+    lowStockItems.map(async (lowStockItem) => {
+      try {
+        const alreadyAlerted = await checkAlertExists(lowStockItem.product.data.code);
+
+        if (!alreadyAlerted) {
+          await axios.post("http://localhost:3002/api/alert/stock", {
+            code: lowStockItem.product.data.code,
+            stock: lowStockItem.quantity_in_stock,
+          });
+          console.log(`✅ Alert sent for product ${lowStockItem.product.data.code}`);
+        } else {
+          console.log(`⚠️ Alert already exists for product ${lowStockItem.product.data.code}`);
+        }
+      } catch (alertError) {
+        console.error(`❌ Failed to send alert for product ${lowStockItem.product.data.code}:`, alertError.message);
+      }
+    })
+  );
 };
