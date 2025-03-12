@@ -6,7 +6,7 @@ const nodemailer = require('nodemailer');
 const { sendEmail } = require('../controllers/alertController');
 
 // ตรวจสอบว่าเส้นทางนี้ถูกต้อง
-router.post('/email', sendEmail);
+router.post('/stock', sendEmail);
 
 
 module.exports = router;
