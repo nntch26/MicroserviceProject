@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const Alert = require('../models/alertModel'); // import model Alert
 
-const sendMail = async (mail) => {
+const sendMail = async (mail, message) => {
     try {
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
@@ -16,7 +16,7 @@ const sendMail = async (mail) => {
         const msg = {
             to: `${mail}`,
             subject: "env test",
-            text: "โปรดอย่าตกใจ นี่คือการทดสอบส่ง gmail ของวิชา Micro โดยการใช้ nodemailer"
+            text: `${message}`
         }
         await transporter.sendMail(msg);
 
@@ -27,7 +27,7 @@ const sendMail = async (mail) => {
 }
 
 exports.sendStockAlert = async (req, res) => {
-    const { mail, code, stock } = req.body;
+    const { code, stock } = req.body;
     const LOW_STOCK_THRESHOLD = 10;
     try {
         if (stock === 0) {
@@ -47,7 +47,7 @@ exports.sendStockAlert = async (req, res) => {
         await newAlert.save();
         console.log('✅ Create new alert');
 
-        await sendMail(mail)
+        // await sendMail(mail, message)
 
         res.status(201).json({ message: "Success to save alert" })
     } catch (error) {

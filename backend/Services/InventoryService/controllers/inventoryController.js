@@ -30,6 +30,8 @@ exports.getAllInventory = async (req, res) => {
       })
     );
    
+    // เรียกใช้ฟังก์ชันแจ้งเตือนสินค้าคงคลังต่ำ
+    sendLowStockAlerts(getAllinventory);
 
     console.log(getAllinventory);
     res.status(200).json(getAllinventory);
@@ -152,4 +154,24 @@ exports.deleteInventory = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Error deleting inventory", error: error.message });
   }
+};
+
+
+// ฟังก์ชันแจ้งเตือนสินค้าคงคลังต่ำ
+const sendLowStockAlerts = async (inventoryList) => {
+  const lowStockItems = inventoryList.filter((item) => item.quantity_in_stock < 6);
+
+  await Promise.all(
+    lowStockItems.map(async (lowStockItem) => {
+      try {
+        await axios.post("http://localhost:3002/api/alert/stock", {
+          code: lowStockItem.product.data.code,
+          stock: lowStockItem.quantity_in_stock,
+        });
+        console.log(`✅ Alert sent for product ${lowStockItem.product.data.code}`);
+      } catch (alertError) {
+        console.error(`❌ Failed to send alert for product ${lowStockItem.product.data.code}:`, alertError.message);
+      }
+    })
+  );
 };
