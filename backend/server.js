@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
-dotenv.config();
+require('dotenv').config();
 const app = express();
 const port =  8080;
 

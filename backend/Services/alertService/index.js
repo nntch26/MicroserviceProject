@@ -4,9 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const alertRoutes = require('./routes/alertRoutes');
 // const connectDB = require("../../config/db");
-const nodemailer = require('nodemailer');
 const mongoose = require("mongoose");
 
+require('dotenv').config();
 const app = express();
 
 // Middleware
