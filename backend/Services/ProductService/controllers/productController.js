@@ -6,10 +6,16 @@ exports.addProduct = async (req, res) => {
     try {
         const { name, code, category, price } = req.body;
 
-        // ตรวจสอบว่าสินค้า SKU นี้มีอยู่แล้วหรือป่าว
+        // ตรวจสอบว่าสินค้านี้มีอยู่แล้วหรือป่าว
         const getProduct = await Product.findOne({ code });
         if (getProduct) {
             return res.status(400).json({ message: 'Code นี้มีอยู่แล้ว' });
+        }
+
+        // ตรวจสอบว่าสินค้านี้มีอยู่แล้วหรือป่าว
+        const getcategory = await Category.findOne({ _id: category });
+        if (!getcategory) {
+            return res.status(400).json({ message: 'ไม่มี category นี้' });
         }
 
         // สร้างสินค้าใหม่
@@ -39,9 +45,9 @@ exports.addProduct = async (req, res) => {
 // ดูรายละเอียดสินค้า แต่ละตัว
 exports.getProduct = async (req, res) => {
     try {
-        const { sku } = req.params;
-        // ค้นหาข้อมูลจาก sku
-        const product = await Product.findOne({ sku }).populate('category', 'name') 
+        const { code } = req.params;
+        // ค้นหาข้อมูลจาก code
+        const product = await Product.findOne({ code }).populate('category', 'name') 
 
         console.log("getProduct",product)
 

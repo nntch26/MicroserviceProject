@@ -5,7 +5,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 
 dotenv.config();
 const app = express();
-const port = process.env.PORT || 8080;
+const port =  8080;
 
 
 // กำหนด CORS และ middleware อื่นๆ
