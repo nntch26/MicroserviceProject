@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 app.use('/products', productRoutes);
 app.use('/categories', categoryRoutes);
 
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
 app.listen(PORT, () => {
   console.log(`Product Service is running on port ${PORT}`);
