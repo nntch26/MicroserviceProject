@@ -1,5 +1,7 @@
 const Product = require('../models/Product');
 const Category = require('../models/Category');  
+const axios = require("axios"); // เรียก API ข้างนอก
+
 
 // เพิ่มสินค้าใหม่
 exports.addProduct = async (req, res) => {
@@ -9,13 +11,13 @@ exports.addProduct = async (req, res) => {
         // ตรวจสอบว่าสินค้านี้มีอยู่แล้วหรือป่าว
         const getProduct = await Product.findOne({ code });
         if (getProduct) {
-            return res.status(400).json({ message: 'Code นี้มีอยู่แล้ว' });
+            return res.status(400).json({ massage: 'Code นี้มีอยู่แล้ว' });
         }
 
-        // ตรวจสอบว่าสินค้านี้มีอยู่แล้วหรือป่าว
+        // ตรวจสอบ category
         const getcategory = await Category.findOne({ _id: category });
         if (!getcategory) {
-            return res.status(400).json({ message: 'ไม่มี category นี้' });
+            return res.status(400).json({ massage: 'ไม่มี category นี้' });
         }
 
         // สร้างสินค้าใหม่
@@ -29,12 +31,12 @@ exports.addProduct = async (req, res) => {
         // บันทึกลงฐานข้อมูล
         await newProduct.save();
 
-        res.status(201).json({ message: 'เพิ่มสินค้าเรียบร้อย', product: newProduct });
+        res.status(201).json({ massage: 'Product added successfully', product: newProduct });
 
     } catch (error) {
         console.log(error.massage)
         res.status(500).json({ status: "error", 
-            message: "เกิดข้อผิดพลาด  ", error
+            massage: "เกิดข้อผิดพลาด  ", error
         });
     }
 };
@@ -46,21 +48,23 @@ exports.addProduct = async (req, res) => {
 exports.getProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        // ค้นหาข้อมูลจาก code
-        const product = await Product.findOne(id).populate('category', 'name') 
+        // ค้นหาข้อมูลจาก id
+        const product = await Product.findOne({ _id: id }).populate('category', 'name') 
+
+        console.log("id ->",id)
 
         console.log("getProduct",product)
 
         if (!product) return res.status(404).json(
             { status: "error", 
-            message: "Product not found" 
+            massage: "Product not found" 
             });
 
-        res.status(200).json({ status: "success", data: product });
+        res.status(200).json({ product });
 
     } catch (error) {
         console.log(error.massage)
-        res.status(500).json({ status: "error", message: error.message });
+        res.status(500).json({ status: "error", massage: error.massage });
     }
 };
 
@@ -74,14 +78,15 @@ exports.getAllProduct = async (req, res) => {
         console.log("getAllProduct",product)
 
         if (!product || product.length === 0) {
-            return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
+            return res.status(404).json({ status: "error", massage: "ไม่พบข้อมูลสินค้า" });
         }
 
-        res.status(200).json({ status: "success", data: product });
+        res.status(200).json({ data: product });
+
 
     } catch (error) {
         console.log(error.massage)
-        res.status(500).json({ status: "error", message: error.message });
+        res.status(500).json({ status: "error", massage: error.massage });
     }
 };
 
@@ -91,48 +96,43 @@ exports.getAllProduct = async (req, res) => {
 
 // แก้ไขข้อมูลสินค้า
 exports.updateProduct = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { name, code, category, price } = req.body; 
 
-    try{
-        const { id } = req.params;  
-        const { name, sku, quantity, category, price, status } = req.body;
+        console.log("id ->", id);
 
-        console.log("id ->",id)
-
-        // อัปเเดตข้อมูลสินค้า
+        // อัปเดตข้อมูลสินค้า
         const updateProduct = await Product.findByIdAndUpdate(
             id,
             {
                 ...(name && { name }),
-                ...(sku && { sku }),
-                ...(quantity && { quantity }),
+                ...(code && { code }),
                 ...(category && { category }),
                 ...(price && { price }),
-                ...(status && { status }),
                 last_updated: Date.now() // อัปเดตเวลาการแก้ไข
             },
             { new: true, runValidators: true } // คืนค่าที่อัปเดตและตรวจสอบ validation
-        )
+        );
 
-        if(!updateProduct){
-            res.status(404).json({
-                status:"error",
-                massage:"ไม่พบข้อมูลสินค้าที่ต้องการแก้ไข"
-            })
+        if (!updateProduct) {
+            return res.status(404).json({
+                status: "error",
+                message: "ไม่พบข้อมูลสินค้าที่ต้องการแก้ไข"
+            });
         }
 
         res.status(200).json({
-            status:"success",
-            data: updateProduct
-        })
+            message: "Product updated successfully",
+            // product: updateProduct
+        });
 
-
-
-    }catch(error){
-        console.log(error.massage)
+    } catch (error) {
+        console.log(error.message); 
         res.status(500).json({ status: "error", message: error.message });
     }
-    
 };
+
 
 // ลบสินค้า
 exports.deleteProduct = async (req, res) => {
@@ -140,6 +140,24 @@ exports.deleteProduct = async (req, res) => {
     try{
         const { id } = req.params
         console.log("Product ID:", id);
+
+
+        // เรียก API เพื่อลบ Inventory ที่เกี่ยวข้องกับ product นี้
+
+        try {
+            await axios.delete(`http://localhost:3003/api/inventory/${id}`);
+            console.log("Inventory deleted successfully.");
+        } catch (inventoryError) {
+            console.error("Error deleting inventory:", inventoryError.message);
+        }
+
+
+        const inventories = await axios.get(`http://localhost:3002/api/inventory/product/${id}`);
+
+        if (inventories.data.length > 0) {
+            // 🔹 ลบ Inventory ที่เกี่ยวข้องก่อน
+            await axios.delete(`http://localhost:3002/api/inventory/product/${id}`);
+        }
 
         const deleteProduct = await Product.findByIdAndDelete(id)
         if(!deleteProduct){
@@ -149,16 +167,20 @@ exports.deleteProduct = async (req, res) => {
             })
         }
 
-        res.status(200).json({
-            status:"success",
-            // data: deleteProduct
-        })
+        // เรียก API เพื่อลบ Inventory ที่เกี่ยวข้องกับ product นี้
+        try {
+            await axios.delete(`http://localhost:3003/api/inventory/${id}`);
+            console.log("Inventory deleted successfully.");
+        } catch (inventoryError) {
+            console.error("Error deleting inventory:", inventoryError.message);
+        }
 
 
+        res.status(200).json({ massage: "Product deleted successfully" });
 
     }catch(error){
         console.log(error.massage)
-        res.status(500).json({ status: "error", message: error.message });
+        res.status(500).json({ status: "error", massage: error.massage });
     }
    
 };

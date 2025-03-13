@@ -19,7 +19,7 @@ MONGO_URL="mongodb://localhost:27017/alertdb" // ชื่อฐานข้อ�
 const connectDB = async () => {
   try {
       const conn = await mongoose.connect(MONGO_URL);
-      console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
+      console.log(`MongoDB Connected: ${conn.connection.host}`);
       
   } catch (error) {
       console.error(`❌ MongoDB Connection Error: ${error.message}`);

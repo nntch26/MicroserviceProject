@@ -64,7 +64,6 @@ exports.getInventoryById = async (req, res) => {
     }
 
 
-
     // รวมข้อมูล Inventory และ Product
     const getinventory = {
       ...inventory._doc,
@@ -86,9 +85,6 @@ exports.addInventory = async (req, res) => {
     const { productId, quantity } = req.body;
     console.log("Received productId:", productId, "Quantity:", quantity);
     
-    // เรียกใช้ API ของ ProductService เพื่อตรวจสอบสินค้า
-    // const productResponse = await axios.get(`http://localhost:3001/api/products/${productId}`);
-    // const product = productResponse.data;
     const product = await Inventory.findOne({ product: productId });
 
     // ถ้าไม่พบสินค้า
@@ -119,31 +115,35 @@ exports.addInventory = async (req, res) => {
 
 
 
-// อัปเดตจำนวนสินค้าคงคลัง
-exports.updateInventory = async (req, res) => {
-    try {
-      const { quantity } = req.body;
-      const inventory = await Inventory.findById(req.params.id);
+// // อัปเดตจำนวนสินค้าคงคลัง
+// exports.updateInventory = async (req, res) => {
+//     try {
+//       const { quantity } = req.body;
+//       const inventory = await Inventory.findById(req.params.id);
   
-      if (!inventory) return res.status(404).json({ message: "Inventory not found" });
+//       if (!inventory) return res.status(404).json({ message: "Inventory not found" });
   
-      inventory.quantity_in_stock = quantity;
-      inventory.status = quantity === 0 ? "out_of_stock" : quantity < 5 ? "low_stock" : "in_stock";
-      inventory.last_updated = Date.now();
+//       inventory.quantity_in_stock = quantity;
+//       inventory.status = quantity === 0 ? "out_of_stock" : quantity < 5 ? "low_stock" : "in_stock";
+//       inventory.last_updated = Date.now();
   
-      await inventory.save();
+//       await inventory.save();
       
-      res.json({ message: "Inventory updated", inventory });
+//       res.json({ message: "Inventory updated", inventory });
   
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
-};
+//     } catch (error) {
+//       res.status(500).json({ message: error.message });
+//     }
+// };
 
-// ลบสินค้าออกจากคลัง
+
+// ลบคลัง
 exports.deleteInventory = async (req, res) => {
+
   try {
+
     const inventory = await Inventory.findByIdAndDelete(req.params.id);
+
     if (!inventory) {
       return res.status(404).json({ message: "Inventory not found" });
     }
@@ -154,6 +154,12 @@ exports.deleteInventory = async (req, res) => {
     res.status(500).json({ message: "Error deleting inventory", error: error.message });
   }
 };
+
+
+
+
+
+
 
 const checkAlertExists = async (code) => {
   try {

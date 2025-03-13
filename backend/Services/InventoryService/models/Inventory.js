@@ -22,4 +22,15 @@ const InventorySchema = new mongoose.Schema({
   }
 });
 
+
+// InventorySchema.pre('remove', async function(next) {
+//   try {
+//     // เมื่อ product ถูกลบ ให้ลบข้อมูลใน Inventory ที่เกี่ยวข้อง
+//     await mongoose.model('Inventory').deleteMany({ product: this._id });
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
 module.exports = mongoose.model("Inventory", InventorySchema);
