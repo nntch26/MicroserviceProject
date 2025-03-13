@@ -1,8 +1,10 @@
 const Inventory = require('../models/Inventory');
 const InventoryMovement = require('../models/InventoryMovement');
 // const Product = require('./models/Product');
+const axios = require("axios");
 
-// ฟังก์ชันเพิ่มสินค้า
+
+// เพิ่มจำนวนสินค้า
 exports.addInventory = async (req, res) => {
   try {
     const { productId, quantity, source } = req.body;
@@ -54,8 +56,7 @@ exports.addInventory = async (req, res) => {
 
 
 
-
-// ฟังก์ชันลดสินค้า
+// ลดจำนวนสินค้า
 exports.removeInventory = async (req, res) => {
   try {
     const { productId, quantity, destination } = req.body;
@@ -67,6 +68,7 @@ exports.removeInventory = async (req, res) => {
       return res.status(404).json({ message: 'Product not found in inventory' });
     }
 
+    // เช็คว่า จำนวนสินค้าที่ต้องการลด > จำนวนสินค้าที่มีป่าว
     if (inventory.quantity_in_stock < quantity) {
       return res.status(400).json({ message: 'Not enough stock to remove' });
     }
@@ -95,6 +97,37 @@ exports.removeInventory = async (req, res) => {
   }
 };
 
+
+
+// ดึงรายการ InventoryMovement ทั้งหมด
+exports.getAllMovements = async (req, res) => {
+  try {
+    const movements = await InventoryMovement.find(); // ดึงรายการ Movement ทั้งหมด
+
+    // ดึงข้อมูลสินค้าจาก Product Service ผ่าน API ทีละตัว
+    const movementsWithProducts = await Promise.all(
+      movements.map(async (item) => {
+
+        try {
+
+          const response = await axios.get(`http://localhost:3001/api/products/${item.product}`);
+          return { ...item._doc, product: response.data }; // เพิ่มข้อมูลสินค้า
+
+        } catch (error) {
+
+          console.error(`Error fetching product ${item.product}:`, error.message);
+          return { ...item._doc, product: { error: "Product not found" } }; // กรณีดึงไม่ได้
+
+        }
+      })
+    );
+
+    res.status(200).json(movementsWithProducts);
+    
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching inventory movements", error: error.message });
+  }
+};
 
 
 

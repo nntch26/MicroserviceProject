@@ -1,5 +1,4 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const cors = require("cors");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 
@@ -8,7 +7,7 @@ const app = express();
 const port =  8080;
 
 
-// กำหนด CORS และ middleware อื่นๆ
+// กำหนด CORS อื่นๆ
 app.use(cors());
 app.use(express.json());
 

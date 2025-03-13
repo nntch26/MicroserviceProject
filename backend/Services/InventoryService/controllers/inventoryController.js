@@ -15,17 +15,15 @@ exports.getAllInventory = async (req, res) => {
     // ดึงข้อมูลสินค้าจาก ProductService ทีละตัว
     const getAllinventory = await Promise.all(
       inventory.map(async (item) => {
+        
         try {
+
           const productData = await axios.get(`http://localhost:3001/api/products/${item.product}`);
-          return {
-            ...item._doc,
-            product: productData.data, // เพิ่มข้อมูล product เข้าไป
-          };
+          return {...item._doc,product: productData.data, };// เพิ่มข้อมูล product เข้าไป
+
         } catch (error) {
-          return {
-            ...item._doc,
-            product: null, // กรณีดึงไม่ได้ ให้ใส่ null
-          };
+          return { ...item._doc,product: null,}; // กรณีดึงไม่ได้ ให้ใส่ null
+          
         }
       })
     );
