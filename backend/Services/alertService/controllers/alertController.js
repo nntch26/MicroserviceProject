@@ -44,8 +44,9 @@ const sendMail = async (mail, message) => {
     }
 }
 
+//เก็บ alert แล้วส่งเมล
 exports.sendStockAlert = async (req, res) => {
-    const { code, stock } = req.body;
+    const { mail, code, stock } = req.body;
     const LOW_STOCK_THRESHOLD = 10;
     try {
         if (stock === 0) {
@@ -54,6 +55,8 @@ exports.sendStockAlert = async (req, res) => {
         } else if (stock > 0 && stock <= LOW_STOCK_THRESHOLD) {
             type = 'low_stock';
             message = `⚠️ สินค้ารหัส ${code} เหลือเพียง ${stock} ชิ้น!`;
+        } else {
+            return
         }
 
         const newAlert = new Alert({
@@ -65,7 +68,7 @@ exports.sendStockAlert = async (req, res) => {
         await newAlert.save();
         console.log('✅ Create new alert');
 
-        // await sendMail(mail, message)
+        await sendMail(mail, message)
 
         res.status(201).json({ message: "Success to save alert" })
     } catch (error) {
@@ -73,5 +76,23 @@ exports.sendStockAlert = async (req, res) => {
         if (res && !res.headersSent) {
             res.status(500).json({ status: "error", message: "Failed to save alert" });
         }
+    }
+};
+
+// ลบ alert
+exports.deleteAlert = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const deletedAlert = await Alert.findByIdAndDelete(id);
+
+        if (!deletedAlert) {
+            return res.status(404).json({ message: "Alert not found" });
+        }
+
+        console.log('✅ Alert deleted successfully');
+        res.status(200).json({ message: "Alert deleted successfully" });
+    } catch (error) {
+        console.error('❌ Error deleting alert:', error);
+        res.status(500).json({ message: "Failed to delete alert" });
     }
 };
