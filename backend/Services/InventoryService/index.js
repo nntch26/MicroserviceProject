@@ -39,7 +39,7 @@ app.get('/endpoint', (req, res) => {
 
 // Routes
 app.use('/api/inventory', inventoryRoutes);
-app.use('/api/inventoryMove', inventoryMoveRoutes);
+app.use('/api/movements', inventoryMoveRoutes);
 
 const PORT = 3003;
 

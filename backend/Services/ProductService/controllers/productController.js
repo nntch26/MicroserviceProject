@@ -143,21 +143,14 @@ exports.deleteProduct = async (req, res) => {
 
 
         // เรียก API เพื่อลบ Inventory ที่เกี่ยวข้องกับ product นี้
-
         try {
-            await axios.delete(`http://localhost:3003/api/inventory/${id}`);
+            await axios.put(`http://localhost:3003/api/inventory/clear/${id}`);
             console.log("Inventory deleted successfully.");
-        } catch (inventoryError) {
-            console.error("Error deleting inventory:", inventoryError.message);
+
+        } catch (error) {
+            console.error("Error deleting inventory:", error.message);
         }
 
-
-        const inventories = await axios.get(`http://localhost:3002/api/inventory/product/${id}`);
-
-        if (inventories.data.length > 0) {
-            // 🔹 ลบ Inventory ที่เกี่ยวข้องก่อน
-            await axios.delete(`http://localhost:3002/api/inventory/product/${id}`);
-        }
 
         const deleteProduct = await Product.findByIdAndDelete(id)
         if(!deleteProduct){
@@ -167,7 +160,7 @@ exports.deleteProduct = async (req, res) => {
             })
         }
 
-        // เรียก API เพื่อลบ Inventory ที่เกี่ยวข้องกับ product นี้
+        // เรียก API เพื่อลบ Inventory ที่เกี่ยวข้องกับ product นี้ ล้างคลังสินค้า
         try {
             await axios.delete(`http://localhost:3003/api/inventory/${id}`);
             console.log("Inventory deleted successfully.");
