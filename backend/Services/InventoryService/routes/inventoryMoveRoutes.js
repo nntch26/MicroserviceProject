@@ -5,8 +5,8 @@ const inventoryMoveController = require("../controllers/inventoryMoveController"
 // inventory movement
 
 
-router.post("/add", inventoryMoveController.addInventory);
-router.post("/remove", inventoryMoveController.removeInventory);
+router.post("/", inventoryMoveController.addInventory);
+router.post("/destination", inventoryMoveController.removeInventory);
 
 
 module.exports = router;
