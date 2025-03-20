@@ -13,7 +13,7 @@ exports.getAllAlerts = async (req, res) => {
         const alerts = await Alert.find(query).sort({ createdAt: -1 });
         res.status(200).json(alerts);
     } catch (error) {
-        console.error('❌ Error fetching alerts:', error);
+        console.error('Error fetching alerts:', error);
         res.status(500).json({ message: "Failed to fetch alerts" });
     }
 };
@@ -72,7 +72,7 @@ exports.sendStockAlert = async (req, res) => {
 
         res.status(201).json({ message: "Success to save alert" })
     } catch (error) {
-        console.log('❌ Error saving alert:', error);
+        console.log('Error saving alert:', error);
         if (res && !res.headersSent) {
             res.status(500).json({ status: "error", message: "Failed to save alert" });
         }
@@ -89,10 +89,10 @@ exports.deleteAlert = async (req, res) => {
             return res.status(404).json({ message: "Alert not found" });
         }
 
-        console.log('✅ Alert deleted successfully');
+        console.log('Alert deleted successfully');
         res.status(200).json({ message: "Alert deleted successfully" });
     } catch (error) {
-        console.error('❌ Error deleting alert:', error);
+        console.error('Error deleting alert:', error);
         res.status(500).json({ message: "Failed to delete alert" });
     }
 };

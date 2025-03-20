@@ -11,13 +11,13 @@ exports.addProduct = async (req, res) => {
         // ตรวจสอบว่าสินค้านี้มีอยู่แล้วหรือป่าว
         const getProduct = await Product.findOne({ code });
         if (getProduct) {
-            return res.status(400).json({ massage: 'Code นี้มีอยู่แล้ว' });
+            return res.status(400).json({ message: 'Code นี้มีอยู่แล้ว' });
         }
 
         // ตรวจสอบ category
         const getcategory = await Category.findOne({ _id: category });
         if (!getcategory) {
-            return res.status(400).json({ massage: 'ไม่มี category นี้' });
+            return res.status(400).json({ message: 'ไม่มี category นี้' });
         }
 
         // สร้างสินค้าใหม่
@@ -31,12 +31,12 @@ exports.addProduct = async (req, res) => {
         // บันทึกลงฐานข้อมูล
         await newProduct.save();
 
-        res.status(201).json({ massage: 'Product added successfully', product: newProduct });
+        res.status(201).json({ message: 'Product added successfully', product: newProduct });
 
     } catch (error) {
-        console.log(error.massage)
+        console.log(error.message)
         res.status(500).json({ status: "error", 
-            massage: "เกิดข้อผิดพลาด  ", error
+            message: "เกิดข้อผิดพลาด  ", error
         });
     }
 };
@@ -57,14 +57,14 @@ exports.getProduct = async (req, res) => {
 
         if (!product) return res.status(404).json(
             { status: "error", 
-            massage: "Product not found" 
+            message: "Product not found" 
             });
 
         res.status(200).json({ product });
 
     } catch (error) {
-        console.log(error.massage)
-        res.status(500).json({ status: "error", massage: error.massage });
+        console.log(error.message)
+        res.status(500).json({ status: "error", message: error.message });
     }
 };
 
@@ -78,15 +78,15 @@ exports.getAllProduct = async (req, res) => {
         console.log("getAllProduct",product)
 
         if (!product || product.length === 0) {
-            return res.status(404).json({ status: "error", massage: "ไม่พบข้อมูลสินค้า" });
+            return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
         }
 
         res.status(200).json({ data: product });
 
 
     } catch (error) {
-        console.log(error.massage)
-        res.status(500).json({ status: "error", massage: error.massage });
+        console.log(error.message)
+        res.status(500).json({ status: "error", message: error.message });
     }
 };
 
@@ -146,15 +146,15 @@ exports.deleteProduct = async (req, res) => {
         if(!deleteProduct){
             res.status(404).json({
                 status:"error",
-                massage:"ไม่พบข้อมูลสินค้าที่ต้องการลบ"
+                message:"ไม่พบข้อมูลสินค้าที่ต้องการลบ"
             })
         }
 
         res.status(200).json({ massage: "Product deleted successfully" });
 
     }catch(error){
-        console.log(error.massage)
-        res.status(500).json({ status: "error", massage: error.massage });
+        console.log(error.message)
+        res.status(500).json({ status: "error", message: error.message });
     }
    
 };

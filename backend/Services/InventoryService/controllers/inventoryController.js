@@ -14,19 +14,19 @@ exports.getAllInventory = async (req, res) => {
     // ดึงข้อมูลสินค้าจาก ProductService ทีละตัว
     const getAllinventory = await Promise.all(
       inventory.map(async (item) => {
-        
+
         try {
 
           const productData = await axios.get(`http://localhost:3001/api/products/${item.product}`);
-          return {...item._doc, product: productData.data, };// เพิ่มข้อมูล product เข้าไป
+          return { ...item._doc, product: productData.data, };// เพิ่มข้อมูล product เข้าไป
 
         } catch (error) {
-          return { ...item._doc, product: null,}; // กรณีดึงไม่ได้ ให้ใส่ null
-          
+          return { ...item._doc, product: null, }; // กรณีดึงไม่ได้ ให้ใส่ null
+
         }
       })
     );
-   
+
     // เรียกใช้ฟังก์ชันแจ้งเตือนสินค้าคงคลังต่ำ
     sendLowStockAlerts(getAllinventory);
 
@@ -88,7 +88,7 @@ exports.addInventory = async (req, res) => {
         product: productId,
         quantity_in_stock: quantity,
         status: quantity > 0 ? "in_stock" : "out_of_stock"
-        
+
       });
 
     await newInventory.save(); // บันทึกข้อมูล
@@ -96,7 +96,7 @@ exports.addInventory = async (req, res) => {
     
     res.status(201).json({ message: "Product added to existing inventory", inventory: newInventory });
 
-    
+
   } catch (error) {
     console.error("Error in addInventory:", error);
     res.status(500).json({ message: "Error adding inventory", error: error.message });
@@ -145,22 +145,27 @@ const checkAlertExists = async (code) => {
 const sendLowStockAlerts = async (inventoryList) => {
   await Promise.all(
     inventoryList.map(async (inventoryItem) => {
-      try {
-        const alreadyAlerted = await checkAlertExists(inventoryItem.product.product.code);
+      if (inventoryItem.product === null) {
+        console.log('inventory have nothing')
+      } else {
+        try {
+          const alreadyAlerted = await checkAlertExists(inventoryItem.product.product.code);
 
-        if (!alreadyAlerted) {
-          await axios.post("http://localhost:3002/api/alert/poststock", {
-            mail: "65070177@kmitl.ac.th",
-            code: inventoryItem.product.product.code,
-            stock: inventoryItem.quantity_in_stock,
-          });
-          console.log(`✅ Alert sent for product ${inventoryItem.product.product.code}`);
-        } else {
-          console.log(`⚠️ Alert already exists for product ${inventoryItem.product.product.code}`);
+          if (!alreadyAlerted) {
+            await axios.post("http://localhost:3002/api/alert/poststock", {
+              mail: "65070177@kmitl.ac.th",
+              code: inventoryItem.product.product.code,
+              stock: inventoryItem.quantity_in_stock,
+            });
+            console.log(`✅ Alert sent for product ${inventoryItem.product.product.code}`);
+          } else {
+            console.log(`⚠️ Alert already exists for product ${inventoryItem.product.product.code}`);
+          }
+        } catch (alertError) {
+          console.error(`❌ Failed to send alert for product ${inventoryItem.product.product.code}:`, alertError.message);
         }
-      } catch (alertError) {
-        console.error(`❌ Failed to send alert for product ${inventoryItem.product.product.code}:`, alertError.message);
       }
+
     })
   );
 };
