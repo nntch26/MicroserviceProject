@@ -6,8 +6,6 @@ router.get("/", inventoryController.getAllInventory);
 router.get("/:id", inventoryController.getInventoryById);
 
 router.post("/create", inventoryController.addInventory);
-router.put('/clear/:productId', inventoryController.clearInventory);
-
 router.delete("/:id", inventoryController.deleteInventory);
 
 

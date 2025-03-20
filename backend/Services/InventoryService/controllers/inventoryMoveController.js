@@ -45,7 +45,7 @@ exports.addInventory = async (req, res) => {
 
     await movement.save();
 
-    res.status(200).json({ message: 'เรียบร้อยแล้ว! อัพเดทสินค้าคงเหลือและบันทึกการเคลื่อนไหว' });
+    res.status(200).json({ message: 'Inventory added and movement recorded.', movement: movement });
 
 
   } catch (error) {
@@ -91,7 +91,7 @@ exports.removeInventory = async (req, res) => {
 
     await movement.save();
 
-    res.status(200).json({ message: 'Inventory updated and movement recorded.' });
+    res.status(200).json({ message: 'Inventory updated and movement recorded.', movement: movement });
   } catch (error) {
     res.status(500).json({ message: 'Error removing inventory', error: error.message });
   }
@@ -132,58 +132,58 @@ exports.getAllMovements = async (req, res) => {
 
 
 // ฟังก์ชันโอนย้ายสินค้า
-exports.transferInventory = async (req, res) => {
-  try {
-    const { productId, quantity, fromLocation, toLocation, reason } = req.body;
+// exports.transferInventory = async (req, res) => {
+//   try {
+//     const { productId, quantity, source, destination } = req.body;
 
-    // ค้นหาสินค้าใน Inventory
-    const inventory = await Inventory.findOne({ product: productId });
+//     // ค้นหาสินค้าใน Inventory
+//     const inventory = await Inventory.findOne({ product: productId });
 
-    if (!inventory) {
-      return res.status(404).json({ message: 'Product not found in inventory' });
-    }
+//     if (!inventory) {
+//       return res.status(404).json({ message: 'Product not found in inventory' });
+//     }
 
-    if (inventory.quantity_in_stock < quantity) {
-      return res.status(400).json({ message: 'Not enough stock to transfer' });
-    }
+//     if (inventory.quantity_in_stock < quantity) {
+//       return res.status(400).json({ message: 'Not enough stock to transfer' });
+//     }
 
-    // ลดจำนวนสินค้าที่ต้นทาง
-    inventory.quantity_in_stock -= quantity;
-    inventory.status = inventory.quantity_in_stock > 0 ? "in_stock" : "out_of_stock";  // อัปเดตสถานะ
+//     // ลดจำนวนสินค้าที่ต้นทาง
+//     inventory.quantity_in_stock -= quantity;
+//     inventory.status = inventory.quantity_in_stock > 0 ? "in_stock" : "out_of_stock";  // อัปเดตสถานะ
 
-    await inventory.save();
+//     await inventory.save();
 
-    // บันทึกการโอนย้ายใน InventoryMovement
-    const movementFrom = new InventoryMovement({
-      product: productId,
-      movement_type: "TRANSFER",
-      quantity: quantity,
-      from_location: fromLocation,
-      to_location: toLocation,
-      reason: reason
-    });
+//     // บันทึกการโอนย้ายใน InventoryMovement
+//     const movementFrom = new InventoryMovement({
+//       product: productId,
+//       movement_type: "TRANSFER",
+//       quantity: quantity,
+//       source: source,  // แหล่งที่มา
+//       destination: destination,  // ปลายทาง 
+//       timestamp: new Date()  // เวลาที่เกิดเหตุการณ์
+//     });
 
-    await movementFrom.save();
+//     await movementFrom.save();
 
-    // อัปเดตสถานะของสินค้าคลังปลายทาง (โอนย้าย)
-    let toInventory = await Inventory.findOne({ product: productId, location: toLocation });
+//     // อัปเดตสถานะของสินค้าคลังปลายทาง (โอนย้าย)
+//     let toInventory = await Inventory.findOne({ product: productId, location: toLocation });
 
-    if (!toInventory) {
-      toInventory = new Inventory({
-        product: productId,
-        quantity_in_stock: quantity,
-        location: toLocation,
-        status: "in_stock"
-      });
-      await toInventory.save();
-    } else {
-      toInventory.quantity_in_stock += quantity;
-      toInventory.status = toInventory.quantity_in_stock > 0 ? "in_stock" : "out_of_stock";
-      await toInventory.save();
-    }
+//     if (!toInventory) {
+//       toInventory = new Inventory({
+//         product: productId,
+//         quantity_in_stock: quantity,
+//         location: toLocation,
+//         status: "in_stock"
+//       });
+//       await toInventory.save();
+//     } else {
+//       toInventory.quantity_in_stock += quantity;
+//       toInventory.status = toInventory.quantity_in_stock > 0 ? "in_stock" : "out_of_stock";
+//       await toInventory.save();
+//     }
 
-    res.status(200).json({ message: 'Inventory updated and transfer recorded.' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error transferring inventory', error: error.message });
-  }
-};
+//     res.status(200).json({ message: 'Inventory updated and transfer recorded.' });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Error transferring inventory', error: error.message });
+//   }
+// };

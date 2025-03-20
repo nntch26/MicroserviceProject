@@ -11,7 +11,6 @@ exports.getAllInventory = async (req, res) => {
     const inventory = await Inventory.find(); // ดึงข้อมูล Inventory ทั้งหมด
 
     
-
     // ดึงข้อมูลสินค้าจาก ProductService ทีละตัว
     const getAllinventory = await Promise.all(
       inventory.map(async (item) => {
@@ -82,25 +81,9 @@ exports.getInventoryById = async (req, res) => {
 // เพิ่ม product เข้า Inventory
 exports.addInventory = async (req, res) => {
   try {
-    const { productId, quantity } = req.body;
+    const { productId, quantity, inventoryId } = req.body;
     console.log("productId:", productId, "Quantity:", quantity);
     
-
-    // ค้นหา inventory ที่ว่าง (product: null)
-    let inventory = await Inventory.findOne({ product: null });
-
-    if (inventory) {
-      // ถ้าพบ inventory ว่าง ให้ เพิ่ม product ใหม่เข้าไป inventory นี้
-      inventory.product = productId;
-      inventory.quantity_in_stock = quantity;
-      inventory.status = quantity > 0 ? "in_stock" : "out_of_stock";
-
-      await inventory.save(); // บันทึกข้อมูล
-      return res.status(200).json({ message: "Product added to existing inventory", inventory });
-
-
-    } else {
-      // ถ้าไม่มี inventory ว่าง ให้สร้างใหม่
       newInventory = new Inventory({
         product: productId,
         quantity_in_stock: quantity,
@@ -108,10 +91,10 @@ exports.addInventory = async (req, res) => {
         
       });
 
-      await newInventory.save(); // บันทึกข้อมูล
-    }
+    await newInventory.save(); // บันทึกข้อมูล
     
-    res.status(201).json({ message: "New inventory created!", inventory: newInventory });
+    
+    res.status(201).json({ message: "Product added to existing inventory", inventory: newInventory });
 
     
   } catch (error) {
@@ -120,32 +103,6 @@ exports.addInventory = async (req, res) => {
   }
 };
 
-
-
-// ล้างคลังสินค้า
-exports.clearInventory = async (req, res) => {
-  try {
-    const { productId } = req.params; // รับ productId จาก URL
-
-    if (!productId) {
-      return res.status(400).json({ message: 'Missing productId' });
-    }
-
-    const result = await Inventory.updateMany(
-      { product: productId },
-      { $set: { product: null, quantity_in_stock: 0, status: 'out_of_stock' } }
-    );
-
-    res.status(200).json({
-      message: `Inventory cleared for product ${productId}`,
-    });
-
-
-  } catch (error) {
-    console.error('Error clearing inventory:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
-};
 
 
 

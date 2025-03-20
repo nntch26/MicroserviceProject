@@ -142,16 +142,6 @@ exports.deleteProduct = async (req, res) => {
         console.log("Product ID:", id);
 
 
-        // เรียก API เพื่อลบ Inventory ที่เกี่ยวข้องกับ product นี้
-        try {
-            await axios.put(`http://localhost:3003/api/inventory/clear/${id}`);
-            console.log("Inventory deleted successfully.");
-
-        } catch (error) {
-            console.error("Error deleting inventory:", error.message);
-        }
-
-
         const deleteProduct = await Product.findByIdAndDelete(id)
         if(!deleteProduct){
             res.status(404).json({
@@ -159,15 +149,6 @@ exports.deleteProduct = async (req, res) => {
                 massage:"ไม่พบข้อมูลสินค้าที่ต้องการลบ"
             })
         }
-
-        // เรียก API เพื่อลบ Inventory ที่เกี่ยวข้องกับ product นี้ ล้างคลังสินค้า
-        try {
-            await axios.delete(`http://localhost:3003/api/inventory/${id}`);
-            console.log("Inventory deleted successfully.");
-        } catch (inventoryError) {
-            console.error("Error deleting inventory:", inventoryError.message);
-        }
-
 
         res.status(200).json({ massage: "Product deleted successfully" });
 

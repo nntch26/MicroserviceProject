@@ -4,8 +4,9 @@ const inventoryMoveController = require("../controllers/inventoryMoveController"
 
 // inventory movement
 
+router.get("/", inventoryMoveController.getAllMovements);
 
-router.post("/", inventoryMoveController.addInventory);
+router.post("/source", inventoryMoveController.addInventory);
 router.post("/destination", inventoryMoveController.removeInventory);
 
 

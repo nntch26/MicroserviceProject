@@ -38,7 +38,7 @@ const sendMail = async (mail, message) => {
         }
         await transporter.sendMail(msg);
 
-        console.log("✅ Email sent successfully");
+        console.log("Email sent successfully");
     } catch(error) {
         console.log(error.message);
     }
@@ -51,10 +51,10 @@ exports.sendStockAlert = async (req, res) => {
     try {
         if (stock === 0) {
             type = 'out_of_stock';
-            message = `🚨 สินค้ารหัส ${code} หมดสต็อกแล้ว!`;
+            message = `สินค้ารหัส ${code} หมดสต็อกแล้ว!`;
         } else if (stock > 0 && stock <= LOW_STOCK_THRESHOLD) {
             type = 'low_stock';
-            message = `⚠️ สินค้ารหัส ${code} เหลือเพียง ${stock} ชิ้น!`;
+            message = `สินค้ารหัส ${code} เหลือเพียง ${stock} ชิ้น!`;
         } else {
             return
         }
@@ -66,7 +66,7 @@ exports.sendStockAlert = async (req, res) => {
             stock,
         });
         await newAlert.save();
-        console.log('✅ Create new alert');
+        console.log('Create new alert');
 
         await sendMail(mail, message)
 
