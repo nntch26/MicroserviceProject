@@ -27,7 +27,7 @@ export function ProductTable({ limit, showActions = false, products = [] }: Prod
 
     }else{
 
-        try{
+      try{
         const response  = await fetchAllProduct()
 
         console.log("Products fetchdata : " ,response)

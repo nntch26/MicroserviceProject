@@ -27,8 +27,12 @@ export function Sidebar({ activePage, setActivePage, sidebarOpen }: SidebarProps
           <button className={`p-2 rounded-lg ${activePage === "dashboard" ? "bg-blue-600 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("dashboard")}>
             <LayoutDashboard size={20} />
           </button>
-          <button className={`p-2 rounded-lg ${activePage === "products" ? "bg-blue-600 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("products")}>
+          <button className={`p-2 rounded-lg ${activePage === "all-products" ? "bg-blue-600 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("all-products")}>
             <Package size={20} />
+          </button>
+
+          <button className={`p-2 rounded-lg ${activePage === "inventory" ? "bg-blue-600 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("inventory")}>
+            <ClipboardList size={20} />
           </button>
         </div>
       </div>
@@ -39,7 +43,7 @@ export function Sidebar({ activePage, setActivePage, sidebarOpen }: SidebarProps
     <aside className="w-64 bg-gray-900 text-gray-300 overflow-y-auto">
       <div className="px-4 py-6">
         <nav className="space-y-1">
-          <button className={`flex items-center px-4 py-3 rounded-md w-full ${activePage === "dashboard" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("dashboard")}> 
+          <button className={`flex items-center px-4 py-3 rounded-md w-full ${activePage === "dashboard" ? "bg-indigo-600 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("dashboard")}> 
             <LayoutDashboard size={20} className="mr-3" />
             <span>Dashboard</span>
           </button>
@@ -55,8 +59,8 @@ export function Sidebar({ activePage, setActivePage, sidebarOpen }: SidebarProps
             </button>
             {expandedCategories.products && (
               <div className="ml-8 mt-1 space-y-1">
-                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "all-products" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("all-products")}>All Products</button>
-                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "categories" ? "bg-gray-700 text-white " : "hover:bg-gray-700"}`} onClick={() => setActivePage("categories")}>Categories</button>
+                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "all-products" ? "bg-indigo-600 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("all-products")}>All Products</button>
+                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "categories" ? "bg-indigo-600 text-white " : "hover:bg-gray-700"}`} onClick={() => setActivePage("categories")}>Categories</button>
               </div>
             )}
           </div>
@@ -72,15 +76,15 @@ export function Sidebar({ activePage, setActivePage, sidebarOpen }: SidebarProps
             </button>
             {expandedCategories.inventory && (
               <div className="ml-8 mt-1 space-y-1">
-                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "Inventory" ? "bg-gray-700 text-white " : "hover:bg-gray-700"}`} onClick={() => setActivePage("inventory")}>Inventory List</button>
-                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "low-stock" ? "bg-gray-700 text-white " : "hover:bg-gray-700"}`} onClick={() => setActivePage("low-stock")}>Low Stock</button>
-                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "out-of-stock" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("out-of-stock")}>Out of Stock</button>
+                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "inventory" ? "bg-indigo-600 text-white " : "hover:bg-gray-700"}`} onClick={() => setActivePage("inventory")}>Inventory List</button>
+                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "low-stock" ? "bg-indigo-600 text-white " : "hover:bg-gray-700"}`} onClick={() => setActivePage("low-stock")}>Low Stock</button>
+                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "out-of-stock" ? "bg-indigo-600 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("out-of-stock")}>Out of Stock</button>
               </div>
             )}
           </div>
 
-          <div className="pt-4 mt-4 border-t border-gray-700">
-            <button className={`flex items-center px-4 py-3 rounded-md hover:bg-gray-700`}>
+          <div className="pt-4 mt-4 border-t border-gray-700 ">
+            <button className={`flex items-center px-4 py-3 rounded-md hover:bg-gray-700 w-full`}>
               <span>Logout</span>
             </button>
           </div>

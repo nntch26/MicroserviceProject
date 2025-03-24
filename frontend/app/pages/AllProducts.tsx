@@ -4,7 +4,7 @@ import { Plus, Search } from "lucide-react";
 import { ProductTable } from "../components/ProductTable";
 import Link from "next/link";
 import { Category, Product } from "@/types/types";
-import { fetchCategory, searchProduct } from "../api/productServices";
+import { fetchCategory, filterProduct, searchProduct } from "../api/productServices";
 
 export function AllProducts() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -30,11 +30,25 @@ export function AllProducts() {
       const response = await searchProduct(searchTerm);
       setProducts(response);
       console.log("searchProduct response:", response);
-      
+
     } catch (error) {
       console.error("Error searching product:", error);
     }
   };
+
+  // filter product ตาม category
+  const handleFilter = async () => {
+    try {
+      console.log("selectedCategory:", selectedCategory);
+      const response = await filterProduct(selectedCategory);
+
+      setProducts(response);
+      console.log("filterProduct response:", response);
+
+    } catch (error) {
+      console.error("Error filtering product:", error);
+    }
+  }
 
 
   useEffect(() => {
@@ -43,6 +57,7 @@ export function AllProducts() {
 
   useEffect(() => {
     handleSearch();
+    handleFilter()
   }, [searchTerm, selectedCategory]);
 
   return (
@@ -85,9 +100,9 @@ export function AllProducts() {
                 onChange={(e) => setSelectedCategory(e.target.value)}
                 className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                <option value="">All Categories</option>
+                <option value="all" >All Categories</option>
                 {categories.map((category) => (
-                  <option key={category._id} value={category._id}>
+                  <option key={category._id} value={category.name}>
                     {category.name}
                   </option>
                 ))}

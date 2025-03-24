@@ -122,6 +122,25 @@ export const searchProduct = async (search:string) => {
         }
 }
 
+// filter product ตาม category
+export const filterProduct = async (category:string) => {
+    
+    try{
+        const { data } = await axios.get<{ data: Product[] }>(
+            `http://localhost:8080/apiProducts/products/filter`, 
+            { params: { category: category } } // params เพื่อส่งค่า category
+        );
+
+        console.log("filterProduct respone: " , data.data)
+        return data.data
+
+    }catch(error: any){
+        console.log(error)
+        return []
+
+    }
+}
+
 
 // Category ทั้งหมด
 export const fetchCategory = async () => {

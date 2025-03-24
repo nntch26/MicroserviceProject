@@ -211,3 +211,63 @@ exports.searchProduct = async (req, res) => {
         res.status(500).json({ status: "error", message: error.message });
     }
 };
+
+
+// filter สินค้าตาม category
+exports.filterProduct = async (req, res) => {
+    try {
+        const { category } = req.query;
+        console.log("category ->", category);
+
+        // ถ้ากดเลือก all แปลว่าแสดงทั้งหมด
+        if (category === "" || category === "all") {
+            const allproduct = await Product.find().populate('category', 'name').lean();
+
+            if (!allproduct || allproduct.length === 0) {
+                return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
+            }
+
+            // แปลงเวลา
+            const modifiedProducts = allproduct.map((product) => ({
+                ...product,
+                last_updated: moment(product.last_updated)
+                    .tz("Asia/Bangkok")
+                    .format("HH:mm:ss - DD MMM YYYY"),
+            }));
+
+            res.status(200).json({ data: modifiedProducts });
+
+
+        // แสดงตาม category ที่เลือก
+        }else{
+
+            // ค้นหา category
+            const getcategory = await Category.findOne({ name: { $regex: category, $options: 'i' } });
+            console.log("getcategory ->", getcategory);
+
+            // ค้นหาสินค้า
+            const filterProduct = await Product.find({ category: getcategory })
+                .populate('category', 'name').lean();
+
+            if (!filterProduct || filterProduct.length === 0) {
+                return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
+            }
+
+            // แปลงเวลา
+            const modifiedProducts = filterProduct.map((product) => ({
+                ...product,
+                last_updated: moment(product.last_updated)
+                    .tz("Asia/Bangkok")
+                    .format("HH:mm:ss - DD MMM YYYY"),
+            }));
+
+            res.status(200).json({ data: modifiedProducts });
+        }
+
+        
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({ status: "error", message: error.message });
+    }
+};

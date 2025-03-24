@@ -23,7 +23,7 @@ export function Navbar({
               <Package size={24} className="text-indigo-600" />
             </div>
             <h1 className="text-xl font-semibold text-gray-800">
-              Inventory
+              Inventory Computer
             </h1>
           </div>
         </div>
