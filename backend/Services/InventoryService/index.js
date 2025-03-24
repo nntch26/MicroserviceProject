@@ -38,8 +38,8 @@ app.get('/endpoint', (req, res) => {
 });
 
 // Routes
-app.use('/api/inventory', inventoryRoutes);
-app.use('/api/movements', inventoryMoveRoutes);
+app.use('/inventory', inventoryRoutes);
+app.use('/movements', inventoryMoveRoutes);
 
 const PORT = 3003;
 

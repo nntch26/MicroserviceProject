@@ -15,9 +15,9 @@ const PRODUCT_SERVICE_URL = "http://localhost:3001";
 const ALERT_SERVICE_URL = "http://localhost:3002";
 const INVENTORY_SERVICE_URL = "http://localhost:3003";
 
-app.use("/api/products", proxy(PRODUCT_SERVICE_URL));
-app.use("/api/alerts", proxy(ALERT_SERVICE_URL));
-app.use("/api/inventory", proxy(INVENTORY_SERVICE_URL));
+app.use("/apiProducts", proxy(PRODUCT_SERVICE_URL));
+app.use("/apiAlerts", proxy(ALERT_SERVICE_URL));
+app.use("/apiInventory", proxy(INVENTORY_SERVICE_URL));
 
 // Test route
 app.get("/", (req, res) => {

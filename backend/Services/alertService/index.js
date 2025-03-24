@@ -35,7 +35,7 @@ app.get('/endpoint', (req, res) => {
 });
 
 // Routes
-app.use('/api/alert', alertRoutes);
+app.use('/alert', alertRoutes);
 
 
 const PORT = 3002;
