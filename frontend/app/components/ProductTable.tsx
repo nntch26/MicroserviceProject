@@ -133,7 +133,8 @@ export function ProductTable({ limit, showActions = false, products = [] }: Prod
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">
-                    {product.last_updated}
+                    {new Date(product.last_updated).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}
+
                   </div>
                 </td>
                 {showActions && (

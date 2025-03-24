@@ -62,15 +62,6 @@ exports.getProduct = async (req, res) => {
             message: "Product not found" 
             });
         
-        // // แปลงเวลา
-        // const product = Array.of(getproduct).map((product) => ({
-        //     ...product,
-        //     last_updated: moment(product.last_updated)
-        //         .tz("Asia/Bangkok")
-        //         .format("HH:mm:ss - DD MMM YYYY"),
-        // }));
-
-        // console.log(product);
 
         res.status(200).json({ product });
 
@@ -92,16 +83,6 @@ exports.getAllProduct = async (req, res) => {
         if (!allproduct || allproduct.length === 0) {
             return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
         }
-
-        // // แปลงเวลา
-        // const modifiedProducts = allproduct.map((product) => ({
-        //     ...product,
-        //     last_updated: moment(product.last_updated)
-        //         .tz("Asia/Bangkok")
-        //         .format("HH:mm:ss - DD MMM YYYY"),
-        // }));
-
-        // console.log(modifiedProducts);
 
 
         res.status(200).json({ data: allproduct });
@@ -202,13 +183,6 @@ exports.searchProduct = async (req, res) => {
             return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
         }
 
-        // // แปลงเวลา
-        // const modifiedProducts = searchProduct.map((product) => ({
-        //     ...product,
-        //     last_updated: moment(product.last_updated)
-        //         .tz("Asia/Bangkok")
-        //         .format("HH:mm:ss - DD MMM YYYY"),
-        // }));
 
         res.status(200).json({ data: searchProduct });
 
@@ -233,13 +207,6 @@ exports.filterProduct = async (req, res) => {
                 return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
             }
 
-            // // แปลงเวลา
-            // const modifiedProducts = allproduct.map((product) => ({
-            //     ...product,
-            //     last_updated: moment(product.last_updated)
-            //         .tz("Asia/Bangkok")
-            //         .format("HH:mm:ss - DD MMM YYYY"),
-            // }));
 
             res.status(200).json({ data: allproduct });
 
@@ -258,14 +225,6 @@ exports.filterProduct = async (req, res) => {
             if (!filterProduct || filterProduct.length === 0) {
                 return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
             }
-
-            // // แปลงเวลา
-            // const modifiedProducts = filterProduct.map((product) => ({
-            //     ...product,
-            //     last_updated: moment(product.last_updated)
-            //         .tz("Asia/Bangkok")
-            //         .format("HH:mm:ss - DD MMM YYYY"),
-            // }));
 
             res.status(200).json({ data: filterProduct });
         }
