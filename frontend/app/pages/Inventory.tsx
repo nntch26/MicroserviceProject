@@ -1,32 +1,12 @@
-"use client";
-import React, { useEffect, useState } from "react";
+
+import React, { useState } from "react";
 import { Plus, Search } from "lucide-react";
-import { ProductTable } from "../components/ProductTable";
+import { InventoryTable } from "../components/InventoryTable";
 import Link from 'next/link';
-import { Category } from "@/types/types";
-import { fetchCategory } from "../api/productServices";
 
 
-export function AllProducts() {
+export function Inventory() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [categories, setCategories] = useState<Category[]>([]);
-  
-  const fetchCategories = async () => {
-    try{
-      const response  = await fetchCategory()
-
-      console.log("Category fetchdata : " ,response)
-      setCategories(response)
-
-    }catch(error){
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    fetchCategories() 
-  }, []);
-    
 
 
   
@@ -34,8 +14,8 @@ export function AllProducts() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">All Products</h1>
-          {/* <p className="text-gray-600 mt-1">Manage your product inventory</p> */}
+          <h1 className="text-2xl font-bold text-gray-800">Inventory List</h1>
+          <p className="text-gray-600 mt-1">Manage your product inventory</p>
         </div>
 
         <Link href="/addProduct">
@@ -64,16 +44,21 @@ export function AllProducts() {
               />
             </div>
             <div className="flex items-center gap-2">
-            <select className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            <option value="">All Categories</option>
-            {categories.map((category) => (
-                <option key={category._id} value={category._id}>{category.name}</option>
-            ))}
+              <select className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="">All Categories</option>
+                <option value="electronics">Electronics</option>
+                <option value="accessories">Accessories</option>
+              </select>
+              <select className="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                <option value="">All Status</option>
+                <option value="in-stock">In Stock</option>
+                <option value="low-stock">Low Stock</option>
+                <option value="out-of-stock">Out of Stock</option>
               </select>
             </div>
           </div>
         </div>
-        <ProductTable showActions={true} />
+        <InventoryTable showActions={true} />
       </div>
     </div>
   );

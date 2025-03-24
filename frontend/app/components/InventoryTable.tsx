@@ -1,37 +1,55 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Package, Pencil, Trash2, Archive  } from "lucide-react";
-import { Product } from "@/types/types";
-import { fetchProduct } from "../api/productServices";
+import { Package, Pencil, Trash2 } from "lucide-react";
 
+interface Products {
+  _id: string;
+  name: string;
+  sku: string;
+  quantity: number;
+  price: number;
+  status: string;
+  category: {
+    _id: string;
+    name: string;
+  };
+}
 
 interface ProductTableProps {
   limit?: number;
   showActions?: boolean;
 }
 
-export function ProductTable({ limit, showActions = false }: ProductTableProps) {
-  const [products, setProducts] = useState<Product[]>([]);
+export function InventoryTable({ limit, showActions = false }: ProductTableProps) {
+  const [products, setProducts] = useState<Products[]>([]);
 
-  
-    const fetchProducts= async () => {
-      try{
-        const response  = await fetchProduct()
-  
-        console.log("Products fetchdata : " ,response)
-        setProducts(response)
-  
-      }catch(error){
-        console.log(error)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const resProducts = await axios.get("http://localhost:8080/api/products");
+        setProducts(resProducts.data.data);
+      } catch (error) {
+        console.error("Error fetching products API:", error);
       }
-    }
-  
-    useEffect(() => {
-      fetchProducts() 
-    }, []);
+    };
+
+    fetchData();
+  }, []);
 
   const displayedProducts = limit ? products.slice(0, limit) : products;
 
+  const getStatusStyle = (status: string) => {
+    switch (status) {
+      case "In Stock":
+        return "bg-green-500 text-white";
+      case "Low Stock":
+        return "bg-yellow-400 text-white";
+      case "Out of Stock":
+        return "bg-red-400 text-white";
+      default:
+        return "bg-gray-400 text-white";
+    }
+  };
 
   return (
     <div className="overflow-x-auto">
@@ -39,10 +57,11 @@ export function ProductTable({ limit, showActions = false }: ProductTableProps) 
         <thead className="bg-gray-50">
           <tr>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CODE</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UPDATE</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stock</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
             {showActions && (
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             )}
@@ -69,7 +88,7 @@ export function ProductTable({ limit, showActions = false }: ProductTableProps) 
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{product.code}</div>
+                  <div className="text-sm text-gray-900">{product.sku}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">{product.category.name}</div>
@@ -78,9 +97,11 @@ export function ProductTable({ limit, showActions = false }: ProductTableProps) 
                   <div className="text-sm text-gray-900">${product.price.toFixed(2)}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{product.last_updated}</div>
+                  <div className="text-sm text-gray-900">{product.quantity}</div>
                 </td>
-               
+                <td className={`px-6 py-4 whitespace-nowrap text-center font-semibold ${getStatusStyle(product.status)}`}>
+                  {product.status}
+                </td>
                 {showActions && (
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <button className="text-blue-600 hover:text-blue-900 mr-3">
