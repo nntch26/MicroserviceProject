@@ -25,7 +25,7 @@ export function InventoryTable({
 
   const filteredInventory = inventory
     .filter((item) => {
-      const product = item.product?.product?.[0];
+      const product = item.product?.product;
 
       return (
         (product?.name?.toLowerCase() || "").includes((searchTerm || "").toLowerCase()) &&
@@ -34,6 +34,7 @@ export function InventoryTable({
     })
     .slice(0, limit ?? inventory.length); // ถ้า limit ไม่มีค่า ให้ใช้จำนวนสินค้าทั้งหมด
 
+    
   // ฟังก์ชันเพื่อกำหนดสีพื้นหลังของ status
   const getStatusClass = (status: string, quantityInStock: number) => {
     // เช็คว่า instock และจำนวนต่ำกว่า 10 ให้เป็น low_stock
@@ -79,7 +80,7 @@ export function InventoryTable({
             </tr>
           ) : (
             filteredInventory.map((item) => {
-              const product = item.product?.product?.[0];
+              const product = item.product?.product;
               const statusClass = getStatusClass(item.status, item.quantity_in_stock); // ใช้ quantity_in_stock เพื่อตรวจสอบ low_stock
               const displayStatus = item.status === 'in_stock' && item.quantity_in_stock < 10 && item.quantity_in_stock !== 0
                 ? 'low_stock'  // เปลี่ยนคำว่า 'in_stock' เป็น 'low_stock' เมื่อจำนวนต่ำกว่า 10
@@ -93,18 +94,20 @@ export function InventoryTable({
                         <Package className="h-5 w-5 text-gray-500" />
                       </div>
                       <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{product?.name}</div>
+                        <div className="text-sm font-medium text-gray-900">{product.name}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{product?.code}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{product?.category?.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">${product?.price?.toFixed(2)}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{product.code}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{product.category?.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">${product.price?.toFixed(2)}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{item.quantity_in_stock}</td>
                   <td className={`px-6 py-4 whitespace-nowrap text-center ${statusClass}`}>
                     {displayStatus}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-center">{new Date(item.last_updated).toLocaleString()}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-center">
+                    {new Date(item.last_updated).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}
+                  </td>
                   {showActions && (
                     <td className="px-6 py-4 whitespace-nowrap text-right">
                       <button className="text-blue-600 hover:text-blue-900 mr-3">

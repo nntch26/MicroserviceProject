@@ -26,7 +26,7 @@ export interface ProductData {
 export interface InventoryProducts {
     _id: string;
     product: {
-        product: Product[];
+        product: Product;
     };
     quantity_in_stock: number;
     status: string;
