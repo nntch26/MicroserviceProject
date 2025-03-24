@@ -107,9 +107,6 @@ export function InventoryTable({
                   <td className="px-6 py-4 whitespace-nowrap text-center">{new Date(item.last_updated).toLocaleString()}</td>
                   {showActions && (
                     <td className="px-6 py-4 whitespace-nowrap text-right">
-                      <button className="text-blue-600 hover:text-blue-900 mr-3">
-                        <Pencil size={16} />
-                      </button>
                       <button className="text-red-600 hover:text-red-900">
                         <Trash2 size={16} />
                       </button>
