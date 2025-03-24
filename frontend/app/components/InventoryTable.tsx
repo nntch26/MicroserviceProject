@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Package, Pencil, Trash2 } from "lucide-react";
 import { InventoryProducts, ProductTableProps } from "@/types/types";
-import { fetchInventoryProduct } from "../api/InventoryServices";
-import axios from "axios";
+import { fetchInventoryProduct, deleteInventoryProduct } from "../api/InventoryServices";
 
 export function InventoryTable({
   searchTerm,
@@ -61,7 +60,7 @@ export function InventoryTable({
     if (!window.confirm("Are you sure you want to delete this product?")) return;
   
     try {
-      await axios.delete(`http://localhost:8080/apiInventory/inventory/${id}`);
+      await deleteInventoryProduct(id);
       setInventory((prevInventory) => prevInventory.filter((item) => item._id !== id));
     } catch (error) {
       console.error("Error deleting product:", error);
