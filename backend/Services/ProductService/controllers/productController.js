@@ -1,6 +1,7 @@
 const Product = require('../models/Product');
 const Category = require('../models/Category');  
 const axios = require("axios"); // เรียก API ข้างนอก
+const moment = require("moment-timezone");
 
 
 // เพิ่มสินค้าใหม่
@@ -49,16 +50,27 @@ exports.getProduct = async (req, res) => {
     try {
         const { id } = req.params;
         // ค้นหาข้อมูลจาก id
-        const product = await Product.findOne({ _id: id }).populate('category', 'name') 
+        const getproduct = await Product.findOne({ _id: id })
+                        .populate('category', 'name').lean(); 
 
         console.log("id ->",id)
 
-        console.log("getProduct",product)
+        console.log("getProduct",getproduct)
 
-        if (!product) return res.status(404).json(
+        if (!getproduct) return res.status(404).json(
             { status: "error", 
             message: "Product not found" 
             });
+        
+        // แปลงเวลา
+        const product = Array.of(getproduct).map((product) => ({
+            ...product,
+            last_updated: moment(product.last_updated)
+                .tz("Asia/Bangkok")
+                .format("HH:mm:ss - DD MMM YYYY"),
+        }));
+
+        console.log(product);
 
         res.status(200).json({ product });
 
@@ -73,15 +85,26 @@ exports.getProduct = async (req, res) => {
 exports.getAllProduct = async (req, res) => {
     try {
         
-        const product = await Product.find().populate('category', 'name'); 
+        const allproduct = await Product.find().populate('category', 'name').lean(); 
 
-        console.log("getAllProduct",product)
+        console.log("getAllProduct",allproduct)
 
-        if (!product || product.length === 0) {
+        if (!allproduct || allproduct.length === 0) {
             return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
         }
 
-        res.status(200).json({ data: product });
+        // แปลงเวลา
+        const modifiedProducts = allproduct.map((product) => ({
+            ...product,
+            last_updated: moment(product.last_updated)
+                .tz("Asia/Bangkok")
+                .format("HH:mm:ss - DD MMM YYYY"),
+        }));
+
+        console.log(modifiedProducts);
+
+
+        res.status(200).json({ data: modifiedProducts });
 
 
     } catch (error) {
