@@ -1,5 +1,5 @@
 'use client'
-import { AddPrdouct, fetchCategory } from '@/app/api/productServices';
+import { AddPrdouct, deleteProduct, fetchCategory } from '@/app/api/productServices';
 import { Category } from '@/types/types';
 import React, { useState, useEffect } from 'react';
 
@@ -25,11 +25,10 @@ const AddProduct = () => {
 
 
 
-  // Handle form submission
+  // submission
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
 
-    // Validate form data
     if (!name || !code || !category || price <= 0) {
       alert('Please fill in all required fields correctly');
       return;
@@ -58,6 +57,8 @@ const AddProduct = () => {
       alert('Failed to add product');
     }
   };
+
+
 
   useEffect(() => {
     fetchCategories() 

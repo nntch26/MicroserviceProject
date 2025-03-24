@@ -7,13 +7,31 @@ import { redirect } from "next/navigation";
 
 
 // product ทั้งหมด
-export const fetchProduct = async () => {
+export const fetchAllProduct = async () => {
 
     try{
         const { data } = await axios.get<{ data: Product[] }>('http://localhost:8080/apiProducts/products')
 
-        console.log("Product respone: " , data.data)
+        console.log("Product  respone: " , data.data)
         return data.data
+
+    }catch(error: any){
+        console.log(error)
+        return []
+
+    }
+    
+}
+
+
+// product บางตัว ทั้งหมด
+export const fetchProductById = async (productId:string) => {
+
+    try{
+        const response  = await axios.get<{ product: Product[] }>(`http://localhost:8080/apiProducts/products/${productId}`)
+
+        console.log("fetchProductById respone: " , response.data)
+        return response.data.product[0];  // เข้าถึงสินค้าตัวแรกจาก array
 
     }catch(error: any){
         console.log(error)
@@ -46,9 +64,42 @@ export const AddPrdouct = async (newdata:ProductData) => {
     
 }
 
+// แก้ไข product
+export const updateProduct = async (productId:string, productData:ProductData) => {
+
+    try{
+        const res = await axios.put(`http://localhost:8080/apiProducts/products/${productId}`, productData)
+        console.log("respone : ",res)
+        console.log("updateProduct successfully:", res);
+
+        return res
 
 
+    }catch(error: any){
+        if (axios.isAxiosError(error)) {
+            console.error("Error updating :", error);
+            throw error;
+        }
+        return []; // ป้องกัน undefined 
 
+    }
+    
+}
+
+
+// ลบ product
+export const deleteProduct = async (productId:string) => {
+    try {
+        const res = await axios.delete(`http://localhost:8080/apiProducts/products/${productId}`);
+        console.log("deleteProduct successfully:", res);
+
+        return res;
+    
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        throw error; 
+    }
+}
 
 
 

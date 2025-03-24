@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Package, Pencil, Trash2, Archive  } from "lucide-react";
 import { Product } from "@/types/types";
-import { fetchProduct } from "../api/productServices";
+import { deleteProduct, fetchAllProduct } from "../api/productServices";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 
 interface ProductTableProps {
@@ -12,23 +14,42 @@ interface ProductTableProps {
 
 export function ProductTable({ limit, showActions = false }: ProductTableProps) {
   const [products, setProducts] = useState<Product[]>([]);
+  const router = useRouter();
+  
 
   
-    const fetchProducts= async () => {
-      try{
-        const response  = await fetchProduct()
+  const fetchProducts= async () => {
+    try{
+      const response  = await fetchAllProduct()
+
+      console.log("Products fetchdata : " ,response)
+      setProducts(response)
+
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+    // ลบ product
+    const handleDelete = async (productId:string) => {
+      try {
+        const response = await deleteProduct(productId);
   
-        console.log("Products fetchdata : " ,response)
-        setProducts(response)
-  
-      }catch(error){
-        console.log(error)
+        if (response) {
+          alert('Product deleted successfully!');
+          fetchProducts();
+        }
+      } catch (error) {
+        console.error('Error deleting product:', error);
+        alert('Failed to delete product');
       }
     }
   
-    useEffect(() => {
-      fetchProducts() 
-    }, []);
+    
+  
+  useEffect(() => {
+    fetchProducts() 
+  }, []);
 
   const displayedProducts = limit ? products.slice(0, limit) : products;
 
@@ -83,10 +104,14 @@ export function ProductTable({ limit, showActions = false }: ProductTableProps) 
                
                 {showActions && (
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button className="text-blue-600 hover:text-blue-900 mr-3">
-                      <Pencil size={16} />
-                    </button>
-                    <button className="text-red-600 hover:text-red-900">
+                    <Link href={`/editProduct/${product._id}`}>
+                      <button className="text-blue-600 hover:text-blue-900 mr-3 cursor-pointer">
+                        <Pencil size={16} />
+                      </button>
+                    </Link>
+                    
+                    <button className="text-red-600 hover:text-red-900 cursor-pointer"
+                    onClick={() => handleDelete(product._id)}>
                       <Trash2 size={16} />
                     </button>
                   </td>
