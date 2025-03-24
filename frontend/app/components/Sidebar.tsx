@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LayoutDashboard, Package, ChevronDown } from "lucide-react";
+import { LayoutDashboard, Package, ChevronDown,ClipboardList  } from "lucide-react";
 
 interface SidebarProps {
   activePage: string;
@@ -65,7 +65,7 @@ export function Sidebar({ activePage, setActivePage, sidebarOpen }: SidebarProps
           <div>
             <button className="flex items-center justify-between w-full px-4 py-3 hover:bg-gray-700 rounded-md" onClick={() => toggleCategory("inventory")}> 
               <div className="flex items-center">
-                <Package size={20} className="mr-3" />
+                <ClipboardList  size={20} className="mr-3" />
                 <span>Inventory</span>
               </div>
               <ChevronDown size={16} className={`transform transition-transform ${expandedCategories.inventory ? "rotate-180" : ""}`} />

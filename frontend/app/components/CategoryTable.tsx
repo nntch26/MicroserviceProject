@@ -1,6 +1,6 @@
 "use client";
 import React, { Component, useEffect, useState } from "react";
-import { Package, Pencil, Trash2, Archive  } from "lucide-react";
+import { Package, Pencil, Trash2, Archive,Tags   } from "lucide-react";
 import { Category } from "@/types/types";
 import { fetchCategory } from "../api/productServices";
 
@@ -57,7 +57,7 @@ export function CategoryTable() {
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">
                   <div className="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <Archive className="h-5 w-5 text-gray-500" />
+                    <Tags  className="h-5 w-5 text-gray-500" />
                   </div>
 
                   <div className="ml-4">
