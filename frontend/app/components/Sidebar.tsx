@@ -79,6 +79,8 @@ export function Sidebar({ activePage, setActivePage, sidebarOpen }: SidebarProps
                 <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "inventory" ? "bg-indigo-600 text-white " : "hover:bg-gray-700"}`} onClick={() => setActivePage("inventory")}>Inventory List</button>
                 <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "low-stock" ? "bg-indigo-600 text-white " : "hover:bg-gray-700"}`} onClick={() => setActivePage("low-stock")}>Low Stock</button>
                 <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "out-of-stock" ? "bg-indigo-600 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("out-of-stock")}>Out of Stock</button>
+                <button className={`flex items-center px-4 py-2 rounded-md w-full ${activePage === "inventory-movement" ? "bg-indigo-600 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("inventory-movement")}>Inventory Movement</button>
+
               </div>
             )}
           </div>

@@ -7,6 +7,8 @@ import { Dashboard } from "./components/Dashboard";
 import { AllProducts } from "./pages/AllProducts";
 import { Categories } from "./pages/Categories";
 import { Inventory } from "./pages/Inventory";
+import { MovementTable } from "./components/MovementTable";
+
 
 export default function Home() {
   const [activePage, setActivePage] = useState("dashboard");
@@ -19,6 +21,9 @@ export default function Home() {
         return <Categories/>
       case "inventory":
         return <Inventory/>
+
+      case "inventory-movement":
+          return <MovementTable/>
       default:
         return <Dashboard />;
     }
