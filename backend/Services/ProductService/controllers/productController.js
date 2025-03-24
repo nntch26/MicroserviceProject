@@ -185,12 +185,18 @@ exports.deleteProduct = async (req, res) => {
 // ค้นหาสินค้า
 exports.searchProduct = async (req, res) => {
     try {
-        const { name } = req.query;
-        console.log("name ->", name);
+        const { query } = req.query;
+        console.log("query ->", query);
 
         // ค้นหาสินค้า
-        const searchProduct = await Product.find({ name: { $regex: name, $options: 'i' } })
-            .populate('category', 'name').lean();
+        const searchProduct = await Product.find({
+            $or: [
+              { name: { $regex: query, $options: 'i' } }, // ค้นหาจาก name
+              { code: { $regex: query, $options: 'i' } }  // ค้นหาจาก code
+            ]
+          })
+            .populate('category', 'name')
+            .lean();
 
         if (!searchProduct || searchProduct.length === 0) {
             return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });

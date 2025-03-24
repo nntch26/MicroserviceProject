@@ -109,7 +109,7 @@ export const searchProduct = async (search:string) => {
         try{
             const { data } = await axios.get<{ data: Product[] }>(
                 `http://localhost:8080/apiProducts/products/search`, 
-                { params: { name: search } } // params เพื่อส่งค่า name
+                { params: { query: search } } // params เพื่อส่งค่า name
             );
     
             console.log("searchProduct respone: " , data.data)
