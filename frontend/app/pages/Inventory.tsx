@@ -26,10 +26,10 @@ export function Inventory() {
           <p className="text-gray-600 mt-1">Manage your product inventory</p>
         </div>
 
-        <Link href="/addProduct">
+        <Link href="/addProductInventory">
           <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 cursor-pointer">
             <Plus size={20} />
-            Add Product
+            Add
           </button>
         </Link>
       </div>

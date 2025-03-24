@@ -39,3 +39,8 @@ export interface ProductTableProps {
     showActions?: boolean;
     limit: number | null;
 }
+
+export interface ProductInventoryData {
+    productId: string;
+    quantity: number;
+}

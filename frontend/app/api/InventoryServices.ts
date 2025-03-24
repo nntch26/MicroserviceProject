@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { ProductInventoryData } from "@/types/types";
 
 export const fetchInventoryProduct = async () => {
     try {
@@ -34,3 +34,23 @@ export const fetchCategories = async () => {
         return [];
     }
 };
+
+export const AddInventoryPrduct = async (Inventorydata: ProductInventoryData) => {
+
+    try{
+        const res = await axios.post('http://localhost:8080/apiInventory/inventory/create', Inventorydata)
+        console.log("respone : ",res)
+        console.log("added successfully:", res);
+
+        return res
+
+    }catch(error: any){
+        if (axios.isAxiosError(error)) {
+            console.error("Error adding :", error);
+            throw error;
+        }
+        return []; // ป้องกัน undefined 
+
+    }
+    
+}
