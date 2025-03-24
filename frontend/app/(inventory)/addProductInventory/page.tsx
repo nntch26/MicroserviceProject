@@ -1,8 +1,8 @@
 'use client'
-import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { Product } from '@/types/types';
 import { AddInventoryPrduct } from '@/app/api/InventoryServices';
+import { fetchAllProduct } from '@/app/api/productServices';
 
 const AddProduct = () => {
   // State for form fields
@@ -13,8 +13,8 @@ const AddProduct = () => {
   // Fetch all products
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/apiProducts/products');
-      setProducts(response.data.data);
+      const response = await fetchAllProduct();
+      setProducts(response);
     } catch (error) {
       console.error("Error fetching products:", error);
     }

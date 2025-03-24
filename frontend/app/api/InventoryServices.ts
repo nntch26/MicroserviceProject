@@ -37,14 +37,14 @@ export const fetchCategories = async () => {
 
 export const AddInventoryPrduct = async (Inventorydata: ProductInventoryData) => {
 
-    try{
+    try {
         const res = await axios.post('http://localhost:8080/apiInventory/inventory/create', Inventorydata)
-        console.log("respone : ",res)
+        console.log("respone : ", res)
         console.log("added successfully:", res);
 
         return res
 
-    }catch(error: any){
+    } catch (error: any) {
         if (axios.isAxiosError(error)) {
             console.error("Error adding :", error);
             throw error;
@@ -52,5 +52,16 @@ export const AddInventoryPrduct = async (Inventorydata: ProductInventoryData) =>
         return []; // ป้องกัน undefined 
 
     }
-    
+
 }
+
+export const deleteInventoryProduct = async (id: string) => {
+    try {
+        const res = await axios.delete(`http://localhost:8080/apiInventory/inventory/${id}`);
+        console.log("Delete product successfully:", res);
+        return res;
+    } catch (error) {
+        console.error("Error deleting product:", error);
+        throw error;
+    }
+};
