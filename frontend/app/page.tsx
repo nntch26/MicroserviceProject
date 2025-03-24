@@ -7,7 +7,7 @@ import { Dashboard } from "./components/Dashboard";
 import { AllProducts } from "./pages/AllProducts";
 import { Categories } from "./pages/Categories";
 import { Inventory } from "./pages/Inventory";
-import { MovementTable } from "./components/MovementTable";
+import { InventoryMovement } from "./pages/InventoryMovement";
 
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
         return <Inventory/>
 
       case "inventory-movement":
-          return <MovementTable/>
+          return <InventoryMovement/>
       default:
         return <Dashboard />;
     }

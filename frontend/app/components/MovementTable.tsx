@@ -1,7 +1,7 @@
 "use client";
 
+import { Package } from "lucide-react";
 import { useState } from "react";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 type InventoryMovement = {
   id: number;
@@ -25,50 +25,51 @@ export function MovementTable() {
     
   return (
     <>
-    <div className="container mx-auto p-4">
-        <h2 className="text-xl font-semibold mb-4">Inventory Movements</h2>
-        <div className="overflow-x-auto">
-            <table className="w-full border-collapse border border-gray-300">
-                <thead>
-                    <tr className="bg-gray-200">
-                        <th className="border border-gray-300 p-2">Product Name</th>
-                        <th className="border border-gray-300 p-2">SKU</th>
-                        <th className="border border-gray-300 p-2">Movement Type</th>
-                        <th className="border border-gray-300 p-2">Quantity</th>
-                        <th className="border border-gray-300 p-2">Reason</th>
-                        <th className="border border-gray-300 p-2">Notes</th>
-                        <th className="border border-gray-300 p-2">Performed By</th>
-                        <th className="border border-gray-300 p-2">Timestamp</th>
-                        <th className="border border-gray-300 p-2">Balance After</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr className="bg-white">
-                        <td className="border border-gray-300 p-2">Product A</td>
-                        <td className="border border-gray-300 p-2">SKU1234</td>
-                        <td className="border border-gray-300 p-2 text-green-600 font-bold">IN</td>
-                        <td className="border border-gray-300 p-2">50</td>
-                        <td className="border border-gray-300 p-2">Purchase</td>
-                        <td className="border border-gray-300 p-2">Supplier Delivery</td>
-                        <td className="border border-gray-300 p-2">Admin</td>
-                        <td className="border border-gray-300 p-2">2024-03-24 10:00</td>
-                        <td className="border border-gray-300 p-2">150</td>
-                    </tr>
-                    <tr className="bg-gray-100">
-                        <td className="border border-gray-300 p-2">Product B</td>
-                        <td className="border border-gray-300 p-2">SKU5678</td>
-                        <td className="border border-gray-300 p-2 text-red-600 font-bold">OUT</td>
-                        <td className="border border-gray-300 p-2">20</td>
-                        <td className="border border-gray-300 p-2">Sale</td>
-                        <td className="border border-gray-300 p-2">Online Order</td>
-                        <td className="border border-gray-300 p-2">Sales Team</td>
-                        <td className="border border-gray-300 p-2">2024-03-24 11:00</td>
-                        <td className="border border-gray-300 p-2">80</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <div className="overflow-x-auto">
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Movement Type</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reason</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Notes</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Performed By</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Timestamp</th>
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Performed By</th>
+            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Balance After</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          
+
+        <tr  className="hover:bg-gray-50">
+            <td className="px-6 py-4 whitespace-nowrap">
+            <div className="flex items-center">
+                <div className="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                <Package className="h-5 w-5 text-gray-500" />
+                </div>
+                <div className="ml-4">
+                <div className="text-sm font-medium text-gray-900"></div>
+                </div>
+            </div>
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap"></td>
+            <td className="px-6 py-4 whitespace-nowrap"></td>
+            <td className="px-6 py-4 whitespace-nowrap"></td>
+            <td className="px-6 py-4 whitespace-nowrap"></td>
+            <td className="px-6 py-4 whitespace-nowrap text-center">
+            </td>
+            <td className="px-6 py-4 whitespace-nowrap text-center">
+            </td>
+        
+        </tr>
+      
+        </tbody>
+      </table>
     </div>
+  
 
     </>
   );
