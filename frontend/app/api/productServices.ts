@@ -103,6 +103,25 @@ export const deleteProduct = async (productId:string) => {
 
 
 
+// search product
+export const searchProduct = async (search:string) => {
+    
+        try{
+            const { data } = await axios.get<{ data: Product[] }>(
+                `http://localhost:8080/apiProducts/products/search`, 
+                { params: { name: search } } // params เพื่อส่งค่า name
+            );
+    
+            console.log("searchProduct respone: " , data.data)
+            return data.data
+    
+        }catch(error: any){
+            console.log(error)
+            return []
+    
+        }
+}
+
 
 // Category ทั้งหมด
 export const fetchCategory = async () => {

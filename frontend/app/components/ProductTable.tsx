@@ -7,40 +7,63 @@ import Link from "next/link";
 interface ProductTableProps {
   limit?: number;
   showActions?: boolean;
+  products?: Product[];
 }
 
-export function ProductTable({ limit, showActions = false }: ProductTableProps) {
-  const [products, setProducts] = useState<Product[]>([]);
+export function ProductTable({ limit, showActions = false, products = [] }: ProductTableProps) {
+  const [productList, setProductList] = useState<Product[]>([]);
+  const router = useRouter();
 
-  const fetchProducts = async () => {
-    try {
-      const response = await fetchAllProduct();
-      setProducts(response);
-    } catch (error) {
-      console.log(error);
+
+  console.log("Products Search : " ,products)
+
+  const fetchProducts= async () => {
+
+    if (products?.length > 0) {
+      setProductList(products);
+      
+      return;
+
+    }else{
+
+        try{
+        const response  = await fetchAllProduct()
+
+        console.log("Products fetchdata : " ,response)
+        setProductList(response)
+
+      }catch(error){
+        console.log(error)
+      }
     }
-  };
+
+    
+  }
 
   // ลบ product
-  const handleDelete = async (productId: string) => {
+  const handleDelete = async (productId:string) => {
     try {
       const response = await deleteProduct(productId);
 
       if (response) {
-        alert("Product deleted successfully!");
+        alert('Product deleted successfully!');
         fetchProducts();
       }
     } catch (error) {
-      console.error("Error deleting product:", error);
-      alert("Failed to delete product");
+      console.error('Error deleting product:', error);
+      alert('Failed to delete product');
     }
-  };
+  }
 
+  
+    
+  
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    fetchProducts() 
+  }, [products]);
 
-  const displayedProducts = limit ? products.slice(0, limit) : products;
+  const displayedProducts = limit ? productList.slice(0, limit) : productList;
+
 
   return (
     <div className="overflow-x-auto">
@@ -70,7 +93,7 @@ export function ProductTable({ limit, showActions = false }: ProductTableProps) 
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {products.length === 0 ? (
+          {productList.length === 0 ? (
             <tr>
               <td
                 colSpan={showActions ? 7 : 6}

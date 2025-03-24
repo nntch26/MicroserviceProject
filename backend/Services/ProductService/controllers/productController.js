@@ -182,3 +182,32 @@ exports.deleteProduct = async (req, res) => {
    
 };
 
+// ค้นหาสินค้า
+exports.searchProduct = async (req, res) => {
+    try {
+        const { name } = req.query;
+        console.log("name ->", name);
+
+        // ค้นหาสินค้า
+        const searchProduct = await Product.find({ name: { $regex: name, $options: 'i' } })
+            .populate('category', 'name').lean();
+
+        if (!searchProduct || searchProduct.length === 0) {
+            return res.status(404).json({ status: "error", message: "ไม่พบข้อมูลสินค้า" });
+        }
+
+        // แปลงเวลา
+        const modifiedProducts = searchProduct.map((product) => ({
+            ...product,
+            last_updated: moment(product.last_updated)
+                .tz("Asia/Bangkok")
+                .format("HH:mm:ss - DD MMM YYYY"),
+        }));
+
+        res.status(200).json({ data: modifiedProducts });
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({ status: "error", message: error.message });
+    }
+};
