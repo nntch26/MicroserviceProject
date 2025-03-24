@@ -1,4 +1,6 @@
 'use client'
+import { fetchCategory } from '@/app/api/productServices';
+import { Category } from '@/types/types';
 import React, { useState, useEffect } from 'react';
 
 const AddProduct = () => {
@@ -8,13 +10,21 @@ const AddProduct = () => {
   const [quantity, setQuantity] = useState(0);
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState(0);
+  const [categories, setCategories] = useState<Category[]>([]);
+  
+  const fetchCategories = async () => {
+    try{
+      const response  = await fetchCategory()
 
-  // State for categories (would typically come from an API)
-  const [categories, setCategories] = useState([
-    { _id: 'cat1', name: 'Electronics' },
-    { _id: 'cat2', name: 'Clothing' },
-    { _id: 'cat3', name: 'Books' }
-  ]);
+      console.log("Category fetchdata : " ,response)
+      setCategories(response)
+
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+
 
   // Handle form submission
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
@@ -61,6 +71,10 @@ const AddProduct = () => {
       alert('Failed to add product');
     }
   };
+
+  useEffect(() => {
+    fetchCategories() 
+  }, []);
 
   return (
     <>
@@ -132,7 +146,7 @@ const AddProduct = () => {
                 required
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
               >
                 <option value="">Select a category</option>
                 {categories.map((cat) => (

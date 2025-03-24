@@ -22,7 +22,7 @@ export function Sidebar({ activePage, setActivePage, sidebarOpen }: SidebarProps
 
   if (!sidebarOpen) {
     return (
-      <div className="w-16 bg-gray-800 text-gray-400 flex flex-col items-center py-4 overflow-y-auto">
+      <div className="w-16 bg-gray-900 text-gray-400 flex flex-col items-center py-4 overflow-y-auto">
         <div className="flex flex-col items-center gap-6 mt-2">
           <button className={`p-2 rounded-lg ${activePage === "dashboard" ? "bg-blue-600 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("dashboard")}>
             <LayoutDashboard size={20} />
@@ -36,7 +36,7 @@ export function Sidebar({ activePage, setActivePage, sidebarOpen }: SidebarProps
   }
 
   return (
-    <aside className="w-64 bg-gray-800 text-gray-300 overflow-y-auto">
+    <aside className="w-64 bg-gray-900 text-gray-300 overflow-y-auto">
       <div className="px-4 py-6">
         <nav className="space-y-1">
           <button className={`flex items-center px-4 py-3 rounded-md w-full ${activePage === "dashboard" ? "bg-gray-700 text-white" : "hover:bg-gray-700"}`} onClick={() => setActivePage("dashboard")}> 
