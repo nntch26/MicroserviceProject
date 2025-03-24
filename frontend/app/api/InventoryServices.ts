@@ -1,5 +1,4 @@
 import axios from "axios";
-import { InventoryProducts, Category } from "@/types/types";
 
 
 export const fetchInventoryProduct = async () => {

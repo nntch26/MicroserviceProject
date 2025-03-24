@@ -25,7 +25,17 @@ export interface ProductData {
 
 export interface InventoryProducts {
     _id: string;
-  product: Product;
-  quantity_in_stock: number;
-  status: string;
+    product: {
+        product: Product[];
+    };
+    quantity_in_stock: number;
+    status: string;
+    last_updated: string;
+}
+
+export interface ProductTableProps {
+    searchTerm: string;
+    selectedCategory: string;
+    showActions?: boolean;
+    limit: number | null;
 }

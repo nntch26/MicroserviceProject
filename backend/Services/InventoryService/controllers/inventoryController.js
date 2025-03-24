@@ -6,23 +6,21 @@ const axios = require("axios"); // แต่ละบริการสื่อ
 // ดึงสินค้าคงคลังทั้งหมด
 exports.getAllInventory = async (req, res) => {
   try {
-    // const inventory = await Inventory.find().populate("product");
-
     const inventory = await Inventory.find(); // ดึงข้อมูล Inventory ทั้งหมด
 
-    
     // ดึงข้อมูลสินค้าจาก ProductService ทีละตัว
     const getAllinventory = await Promise.all(
       inventory.map(async (item) => {
-
         try {
-
-          const productData = await axios.get(`http://localhost:3001/api/products/${item.product}`);
-          return { ...item._doc, product: productData.data, };// เพิ่มข้อมูล product เข้าไป
-
+          // ตรวจสอบว่า item.product เป็น ObjectId และไม่เป็น null
+          if (item.product) {
+            const productData = await axios.get(`http://localhost:3001/products/${item.product}`);
+            return { ...item._doc, product: productData.data }; // เพิ่มข้อมูล product เข้าไป
+          }
+          return { ...item._doc, product: null }; // ถ้าไม่มี product ให้ใส่ null
         } catch (error) {
-          return { ...item._doc, product: null, }; // กรณีดึงไม่ได้ ให้ใส่ null
-
+          console.error("Error fetching product data:", error);
+          return { ...item._doc, product: null }; // ถ้าดึงข้อมูลไม่ได้ ให้ใส่ null
         }
       })
     );
@@ -31,12 +29,13 @@ exports.getAllInventory = async (req, res) => {
     sendLowStockAlerts(getAllinventory);
 
     console.log(getAllinventory);
-    res.status(200).json(getAllinventory);
+    res.status(200).json(getAllinventory); // ส่งข้อมูลที่ได้จาก axios
 
   } catch (error) {
     res.status(500).json({ message: "Error fetching inventory", error: error.message });
   }
 };
+
 
 
 
