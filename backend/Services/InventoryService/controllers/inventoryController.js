@@ -27,8 +27,8 @@ exports.getAllInventory = async (req, res) => {
 
     // เรียกใช้ฟังก์ชันแจ้งเตือนสินค้าคงคลังต่ำ
     sendLowStockAlerts(getAllinventory);
+    console.log(getAllinventory)
 
-    console.log(getAllinventory);
     res.status(200).json(getAllinventory); // ส่งข้อมูลที่ได้จาก axios
 
   } catch (error) {
@@ -52,7 +52,7 @@ exports.getInventoryById = async (req, res) => {
     // ตรวจสอบว่า inventory มี product หรือไม่
     if (inventory.product) {
       try {
-        const getproductData = await axios.get(`http://localhost:3001/api/products/${inventory.product}`);
+        const getproductData = await axios.get(`http://localhost:3001/products/${inventory.product}`);
         productData = getproductData.data; // ดึงข้อมูลสินค้า
 
       } catch (error) {
@@ -132,7 +132,7 @@ exports.deleteInventory = async (req, res) => {
 // เช็คว่ามี alert ซ้ำใน database หรือยัง
 const checkAlertExists = async (code) => {
   try {
-    const response = await axios.get(`http://localhost:3002/api/alert/getstock?code=${code}`);
+    const response = await axios.get(`http://localhost:3002/alert/getstock?code=${code}`);
     return response.data.length > 0; // ถ้ามี alert อยู่แล้ว return true
   } catch (error) {
     console.error(`❌ Failed to check alert for product ${code}:`, error.message);
@@ -151,7 +151,7 @@ const sendLowStockAlerts = async (inventoryList) => {
           const alreadyAlerted = await checkAlertExists(inventoryItem.product.product.code);
 
           if (!alreadyAlerted) {
-            await axios.post("http://localhost:3002/api/alert/poststock", {
+            await axios.post("http://localhost:3002/alert/poststock", {
               mail: "65070177@kmitl.ac.th",
               code: inventoryItem.product.product.code,
               stock: inventoryItem.quantity_in_stock,
