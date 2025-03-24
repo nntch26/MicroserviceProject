@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Package, Pencil, Trash2 } from "lucide-react";
 import { InventoryProducts, ProductTableProps } from "@/types/types";
 import { fetchInventoryProduct } from "../api/InventoryServices";
+import axios from "axios";
 
 export function InventoryTable({
   searchTerm,
@@ -51,6 +52,17 @@ export function InventoryTable({
         return 'bg-red-100 text-red-800'; // สีแดง
       default:
         return 'bg-gray-100 text-gray-800'; // สีเทา (กรณีที่ status ไม่ตรงกับค่าเหล่านี้)
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
+  
+    try {
+      await axios.delete(`http://localhost:8080/apiInventory/inventory/${id}`);
+      setInventory((prevInventory) => prevInventory.filter((item) => item._id !== id));
+    } catch (error) {
+      console.error("Error deleting product:", error);
     }
   };
 
@@ -110,7 +122,7 @@ export function InventoryTable({
                   </td>
                   {showActions && (
                     <td className="px-6 py-4 whitespace-nowrap text-right">
-                      <button className="text-red-600 hover:text-red-900">
+                      <button onClick={() => handleDelete(item._id)} className="text-red-600 hover:text-red-900">
                         <Trash2 size={16} />
                       </button>
                     </td>
