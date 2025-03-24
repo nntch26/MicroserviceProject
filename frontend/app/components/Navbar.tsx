@@ -32,9 +32,9 @@ export function Navbar({
           <input type="text" placeholder="Search inventory..." className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
         </div> */}
         <div className="flex items-center gap-3">
-          {/* <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
+          <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
             <Bell size={20} />
-          </button> */}
+          </button>
           {/* <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full">
             <Settings size={20} />
           </button> */}
