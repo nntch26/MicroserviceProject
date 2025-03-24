@@ -25,15 +25,17 @@ export function InventoryTable({
   }, []);
 
   const filteredInventory = inventory
-    .filter((item) => {
-      const product = item.product?.product;
+  .filter((item) => {
+    const product = item.product?.product;
+    const searchTermLower = (searchTerm || "").toLowerCase();
 
-      return (
-        (product?.name?.toLowerCase() || "").includes((searchTerm || "").toLowerCase()) &&
-        (selectedCategory ? product?.category?.name === selectedCategory : true)
-      );
-    })
-    .slice(0, limit ?? inventory.length); // ถ้า limit ไม่มีค่า ให้ใช้จำนวนสินค้าทั้งหมด
+    return (
+      (product?.name?.toLowerCase().includes(searchTermLower) || 
+       product?.code?.toLowerCase().includes(searchTermLower)) && // เพิ่มเงื่อนไขการค้นหาด้วย code
+      (selectedCategory ? product?.category?.name === selectedCategory : true)
+    );
+  })
+  .slice(0, limit ?? inventory.length); // ถ้า limit ไม่มีค่า ให้ใช้จำนวนสินค้าทั้งหมด
 
     
   // ฟังก์ชันเพื่อกำหนดสีพื้นหลังของ status
