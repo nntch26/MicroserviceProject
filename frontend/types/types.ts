@@ -22,3 +22,10 @@ export interface ProductData {
     category: string;
     price: number;
 }
+
+export interface InventoryProducts {
+    _id: string;
+  product: Product;
+  quantity_in_stock: number;
+  status: string;
+}

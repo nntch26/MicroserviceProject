@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Package, Pencil, Trash2, Archive  } from "lucide-react";
 import { Product } from "@/types/types";
 import { deleteProduct, fetchAllProduct } from "../api/productServices";
+import { Package, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-
 
 interface ProductTableProps {
   limit?: number;
@@ -14,65 +11,71 @@ interface ProductTableProps {
 
 export function ProductTable({ limit, showActions = false }: ProductTableProps) {
   const [products, setProducts] = useState<Product[]>([]);
-  const router = useRouter();
-  
 
-  
-  const fetchProducts= async () => {
-    try{
-      const response  = await fetchAllProduct()
-
-      console.log("Products fetchdata : " ,response)
-      setProducts(response)
-
-    }catch(error){
-      console.log(error)
+  const fetchProducts = async () => {
+    try {
+      const response = await fetchAllProduct();
+      setProducts(response);
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
-    // ลบ product
-    const handleDelete = async (productId:string) => {
-      try {
-        const response = await deleteProduct(productId);
-  
-        if (response) {
-          alert('Product deleted successfully!');
-          fetchProducts();
-        }
-      } catch (error) {
-        console.error('Error deleting product:', error);
-        alert('Failed to delete product');
+  // ลบ product
+  const handleDelete = async (productId: string) => {
+    try {
+      const response = await deleteProduct(productId);
+
+      if (response) {
+        alert("Product deleted successfully!");
+        fetchProducts();
       }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert("Failed to delete product");
     }
-  
-    
-  
+  };
+
   useEffect(() => {
-    fetchProducts() 
+    fetchProducts();
   }, []);
 
   const displayedProducts = limit ? products.slice(0, limit) : products;
-
 
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CODE</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">UPDATE</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Product
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              CODE
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Category
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Price
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              UPDATE
+            </th>
             {showActions && (
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Actions
+              </th>
             )}
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
           {products.length === 0 ? (
             <tr>
-              <td colSpan={showActions ? 7 : 6} className="px-6 py-4 text-center text-gray-500">
+              <td
+                colSpan={showActions ? 7 : 6}
+                className="px-6 py-4 text-center text-gray-500"
+              >
                 Loading...
               </td>
             </tr>
@@ -85,7 +88,9 @@ export function ProductTable({ limit, showActions = false }: ProductTableProps) 
                       <Package className="h-5 w-5 text-gray-500" />
                     </div>
                     <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-900">{product.name}</div>
+                      <div className="text-sm font-medium text-gray-900">
+                        {product.name}
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -93,15 +98,20 @@ export function ProductTable({ limit, showActions = false }: ProductTableProps) 
                   <div className="text-sm text-gray-900">{product.code}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{product.category.name}</div>
+                  <div className="text-sm text-gray-900">
+                    {product.category.name}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">${product.price.toFixed(2)}</div>
+                  <div className="text-sm text-gray-900">
+                    ${product.price.toFixed(2)}
+                  </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{product.last_updated}</div>
+                  <div className="text-sm text-gray-900">
+                    {product.last_updated}
+                  </div>
                 </td>
-               
                 {showActions && (
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                     <Link href={`/editProduct/${product._id}`}>
@@ -109,9 +119,11 @@ export function ProductTable({ limit, showActions = false }: ProductTableProps) 
                         <Pencil size={16} />
                       </button>
                     </Link>
-                    
-                    <button className="text-red-600 hover:text-red-900 cursor-pointer"
-                    onClick={() => handleDelete(product._id)}>
+
+                    <button
+                      className="text-red-600 hover:text-red-900 cursor-pointer"
+                      onClick={() => handleDelete(product._id)}
+                    >
                       <Trash2 size={16} />
                     </button>
                   </td>
