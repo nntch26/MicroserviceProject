@@ -3,6 +3,7 @@ import { Product } from "@/types/types";
 import { deleteProduct, fetchAllProduct } from "../api/productServices";
 import { Package, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ProductTableProps {
   limit?: number;
