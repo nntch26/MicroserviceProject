@@ -54,7 +54,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Menu, Bell, User, Package, X } from "lucide-react";
+import { Menu, Bell, User, Package, X, Trash2 } from "lucide-react";
 
 interface NavbarProps {
   sidebarOpen: boolean;
@@ -74,18 +74,29 @@ export function Navbar({ sidebarOpen, setSidebarOpen }: NavbarProps) {
   const [alerts, setAlerts] = useState<Alert[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  // ดึงข้อมูลแจ้งเตือน
   useEffect(() => {
-    const fetchAlerts = async () => {
-      try {
-        const response = await axios.get("http://localhost:3002/alert/getstock");
-        setAlerts(response.data);
-      } catch (error) {
-        console.error("Error fetching alerts:", error);
-      }
-    };
-
     fetchAlerts();
   }, []);
+
+  const fetchAlerts = async () => {
+    try {
+      const response = await axios.get("http://localhost:3002/alert/getstock");
+      setAlerts(response.data);
+    } catch (error) {
+      console.error("Error fetching alerts:", error);
+    }
+  };
+
+  // ฟังก์ชันลบแจ้งเตือน
+  const deleteAlert = async (_id: string) => {
+    try {
+      await axios.delete(`http://localhost:3002/alert/deletealert/${_id}`);
+      setAlerts((prevAlerts) => prevAlerts.filter((alert) => alert._id !== _id));
+    } catch (error) {
+      console.error("Error deleting alert:", error);
+    }
+  };
 
   return (
     <header className="bg-white border-b border-gray-200 shadow-sm relative">
@@ -130,10 +141,18 @@ export function Navbar({ sidebarOpen, setSidebarOpen }: NavbarProps) {
                 {alerts.length === 0 ? (
                   <p className="text-center text-gray-500 py-3">No new alerts</p>
                 ) : (
-                  alerts.slice(0, 5).map((alert) => (
-                    <div key={alert._id} className="px-4 py-3 border-b last:border-none flex flex-col">
-                      <span className="text-sm font-medium text-gray-900">{alert.message}</span>
-                      <span className="text-xs text-gray-500">Code: {alert.code} | Stock: {alert.stock}</span>
+                  alerts.map((alert) => (
+                    <div key={alert._id} className="px-4 py-3 border-b last:border-none flex items-center justify-between">
+                      <div>
+                        <span className="text-sm font-medium text-gray-900">{alert.message}</span>
+                        <span className="text-xs text-gray-500 block">Code: {alert.code} | Stock: {alert.stock}</span>
+                      </div>
+                      <button
+                        onClick={() => deleteAlert(alert._id)}
+                        className="text-red-500 hover:text-red-700 p-1"
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   ))
                 )}
@@ -153,3 +172,4 @@ export function Navbar({ sidebarOpen, setSidebarOpen }: NavbarProps) {
     </header>
   );
 }
+
