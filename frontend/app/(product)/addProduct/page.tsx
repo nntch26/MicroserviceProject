@@ -1,13 +1,12 @@
 'use client'
-import { fetchCategory } from '@/app/api/productServices';
+import { AddPrdouct, fetchCategory } from '@/app/api/productServices';
 import { Category } from '@/types/types';
 import React, { useState, useEffect } from 'react';
 
 const AddProduct = () => {
   // State for form fields
   const [name, setName] = useState('');
-  const [sku, setSku] = useState('');
-  const [quantity, setQuantity] = useState(0);
+  const [code, setCode] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState(0);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -31,41 +30,29 @@ const AddProduct = () => {
     e.preventDefault();
 
     // Validate form data
-    if (!name || !sku || !category || price <= 0) {
+    if (!name || !code || !category || price <= 0) {
       alert('Please fill in all required fields correctly');
       return;
     }
 
     const productData = {
       name,
-      sku,
-      quantity,
+      code,
       category,
       price
     };
 
     try {
-      // Send POST request to add product
-      const response = await fetch('/api/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(productData)
-      });
+      const response = await AddPrdouct(productData);
 
-      if (response.ok) {
-        // Reset form after successful submission
+      if (response) {
         setName('');
-        setSku('');
-        setQuantity(0);
+        setCode('');
         setCategory('');
         setPrice(0);
         alert('Product added successfully!');
-      } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.message}`);
-      }
+      } 
+
     } catch (error) {
       console.error('Error adding product:', error);
       alert('Failed to add product');
@@ -103,37 +90,23 @@ const AddProduct = () => {
                 placeholder="Enter product name" />
             </div>
 
-            {/* SKU */}
+            {/* code */}
             <div className="mb-4">
-              <label htmlFor="sku" className="block text-sm font-medium text-gray-700 mb-2">
-                SKU
+              <label htmlFor="code" className="block text-sm font-medium text-gray-700 mb-2">
+                Code
               </label>
               <input
-                id="sku"
-                name="sku"
+                id="code"
+                name="code"
                 type="text"
                 required
-                value={sku}
-                onChange={(e) => setSku(e.target.value)}
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter SKU" />
+                placeholder="Enter code" />
             </div>
 
-            {/* Quantity */}
-            <div className="mb-4">
-              <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">
-                Quantity
-              </label>
-              <input
-                id="quantity"
-                name="quantity"
-                type="number"
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                min="0"
-                className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter quantity" />
-            </div>
+  
 
             {/* Category */}
             <div className="mb-4">

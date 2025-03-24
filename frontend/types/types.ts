@@ -14,3 +14,11 @@ export interface Product {
     last_updated: string;
     __v: number;
 }
+
+// ส่ง api product
+export interface ProductData {
+    code: string;
+    name: string;
+    category: string;
+    price: number;
+}
