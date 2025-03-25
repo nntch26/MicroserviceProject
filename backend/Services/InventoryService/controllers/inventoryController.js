@@ -152,7 +152,7 @@ const sendLowStockAlerts = async (inventoryList) => {
 
           if (!alreadyAlerted) {
             await axios.post("http://localhost:3002/alert/poststock", {
-              mail: "65070177@kmitl.ac.th",
+              mail: "65070117@kmitl.ac.th",
               code: inventoryItem.product.product.code,
               stock: inventoryItem.quantity_in_stock,
             });
