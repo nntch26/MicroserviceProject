@@ -2,7 +2,6 @@
 import { Category, InventoryMovement, Product } from '@/types/types';
 import { Search, Truck, Download } from 'lucide-react';
 import React, { useEffect, useState } from 'react'
-import Link from "next/link";
 import { Navbar } from '@/app/components/Navbar';
 import { fetchInventoryMovementByID } from '@/app/api/InventoryServices';
 import { useParams } from 'next/navigation';
@@ -12,7 +11,6 @@ export default function Page() {
     const [limit, setLimit] = useState();
     const [sidebarOpen, setSidebarOpen] = useState(true);
     const [searchTerm, setSearchTerm] = useState("");
-    const [error, setError] = useState(false);
     const [product, setProduct] = useState<Product>()
 
     const [inventoryMovements, setInventoryMovements] = useState<InventoryMovement[]>([]);
@@ -31,9 +29,7 @@ export default function Page() {
                     setProduct(response[0].inventory.product.product);
                 }
             }
-            else {
-                setError(true);  
-            }
+            
         } catch (error) {
             console.log(error);
         }
@@ -56,9 +52,9 @@ export default function Page() {
         fetchInventoryMovements();
     }, []);
 
-    // Excel Export Function
+    //  ส่งออกเป็น Excel 
     const exportToExcel = () => {
-        // Prepare data for export
+
         const exportData = filteredInventoryMovement.map((movement) => ({
             Date: new Date(movement.updated_at).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" }),
             Product: movement.inventory?.product?.product?.name || "-",
