@@ -120,3 +120,59 @@ exports.createInventoryMovement = async (req, res) => {
     res.status(500).json({ message: "Error creating inventory movement", error });
   }
 }
+
+
+
+// ดึงรายการ InventoryMovement เฉพาะของ inventoryId ที่เลือก
+exports.getMovementsByInventoryId = async (req, res) => {
+  try {
+    const { inventoryId } = req.params; // ดึง inventoryId จาก URL parameter
+    console.log("inventoryId", inventoryId)
+
+    if (!inventoryId) {
+      return res.status(400).json({ message: "Inventory ID is required" });
+    }
+
+    // ดึง InventoryMovement ที่มี inventoryId ตรงกับที่เลือก
+    const movements = await InventoryMovement.find({ inventory: inventoryId }).sort({ updated_at: -1 });
+
+    if (!movements.length) {
+      return res.status(404).json({ message: `No movements found for inventory ID ${inventoryId}` });
+    }
+
+    // ดึงข้อมูลจาก API สำหรับแต่ละ movement
+    const inventoryPromises = movements.map(async (movement) => {
+      // ตรวจสอบว่า inventoryId มีค่า
+      if (!movement.inventory) {
+        console.log(`No inventory ID found for movement with ID ${movement._id}`);
+        return { ...movement._doc, inventory: null }; 
+      }
+
+      try {
+        // ดึงข้อมูล inventory จาก API
+        const response = await axios.get(`http://localhost:8080/apiInventory/inventory/${movement.inventory}`);
+
+        // ตรวจสอบว่า API ส่งข้อมูลกลับมาหรือไม่
+        if (response.status === 200 && response.data) {
+          console.log(`Successfully fetched inventory for movement ID ${movement._id}`);
+          // แทนที่ inventory ด้วยข้อมูลที่ดึงมา
+          return { ...movement._doc, inventory: response.data };
+        } else {
+          console.error(`Failed to fetch inventory for ID ${movement.inventory}, status code: ${response.status}`);
+          return { ...movement._doc, inventory: null };
+        }
+
+      } catch (error) {
+        console.error(`Error fetching inventory for ID ${movement.inventory}:`, error);
+        return { ...movement._doc, inventory: null }; 
+      }
+    });
+
+    const enrichedMovements = await Promise.all(inventoryPromises);
+    res.status(200).json(enrichedMovements);
+
+  } catch (error) {
+    console.error("Error fetching inventory movements:", error);
+    res.status(500).json({ message: "Error fetching inventory movements", error: error.message });
+  }
+};

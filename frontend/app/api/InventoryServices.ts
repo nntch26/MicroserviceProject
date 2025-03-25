@@ -106,3 +106,23 @@ export const AddInventoryMovement  = async (newdata:MovementData) => {
     }
     
 }
+
+
+
+// ดึง inventory movement แต่ละอัน
+export const fetchInventoryMovementByID = async (inventoryId: string) => {
+    try {
+        const res = await axios.get(`http://localhost:8080/apiInventory/movements/${inventoryId}`);
+
+        console.log("fetchInventory response:", res.data);
+        return res.data;
+    } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+            console.warn(`ไม่พบข้อมูลสำหรับ Inventory ID: ${inventoryId}`);
+            return [];
+        }
+
+        console.error("Error fetching inventory:", error.message);
+        return [];
+    }
+};

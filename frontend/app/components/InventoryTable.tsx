@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Package, Pencil, Trash2 } from "lucide-react";
+import { Package, Pencil, Trash2, ClipboardList } from "lucide-react";
 import { InventoryProducts, ProductTableProps } from "@/types/types";
 import { fetchInventoryProduct, deleteInventoryProduct } from "../api/InventoryServices";
+import Link from "next/link";
+
 
 export function InventoryTable({
   searchTerm,
@@ -67,6 +69,11 @@ export function InventoryTable({
     }
   };
 
+
+ 
+
+
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-gray-200">
@@ -99,6 +106,7 @@ export function InventoryTable({
                 ? 'low_stock'  // เปลี่ยนคำว่า 'in_stock' เป็น 'low_stock' เมื่อจำนวนต่ำกว่า 10
                 : item.status;
 
+             
               return (
                 <tr key={item._id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -123,7 +131,13 @@ export function InventoryTable({
                   </td>
                   {showActions && (
                     <td className="px-6 py-4 whitespace-nowrap text-right ">
-                      <button onClick={() => handleDelete(item._id)} className="text-red-600 hover:text-red-900">
+                      <Link href={`/movement/${item._id}`}>
+                        <button className="text-blue-600 hover:text-blue-900 mr-3 cursor-pointer">
+                          <ClipboardList size={16} />
+                        </button>
+                      </Link>
+                      
+                      <button onClick={() => handleDelete(item._id)} className="text-red-600 hover:text-red-900 cursor-pointer">
                         <Trash2 size={16} />
                       </button>
                     </td>

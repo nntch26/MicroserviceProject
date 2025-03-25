@@ -55,6 +55,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Menu, Bell, User, Package, X, Trash2 , AlertCircle, AlertTriangle, Tag } from "lucide-react";
+import Link from "next/link";
 
 interface NavbarProps {
   sidebarOpen: boolean;
@@ -105,12 +106,14 @@ export function Navbar({ sidebarOpen, setSidebarOpen }: NavbarProps) {
           <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-1 rounded-md hover:bg-gray-100">
             <Menu size={24} className="text-gray-600" />
           </button>
-          <div className="flex items-center gap-2">
-            <div className="p-1 rounded">
-              <Package size={24} className="text-indigo-600" />
+           <Link href="/">
+            <div className="flex items-center gap-2">
+                <div className="p-1 rounded">
+                  <Package size={24} className="text-indigo-600" />
+                </div>
+                <h1 className="text-xl font-semibold text-gray-800">Inventory Computer</h1>
             </div>
-            <h1 className="text-xl font-semibold text-gray-800">Inventory Computer</h1>
-          </div>
+          </Link>
         </div>
 
         <div className="flex items-center gap-3 relative">
