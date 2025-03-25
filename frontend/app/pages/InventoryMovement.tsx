@@ -62,7 +62,7 @@ export function InventoryMovement() {
             </select>
           </div>
         </div>
-        <MovementTable />
+        <MovementTable searchTerm={searchTerm} showActions={true} />        
       </div>
     </div>
   );

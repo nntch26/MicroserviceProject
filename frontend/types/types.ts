@@ -48,7 +48,7 @@ export interface ProductInventoryData {
 export interface InventoryMovement{
     _id: string; 
     inventory: InventoryProducts
-    movement_type: 'IN' | 'OUT';
+    movement_type: string;
     quantity: number;  
     reason: string; 
     notes: string;
@@ -60,7 +60,7 @@ export interface InventoryMovement{
 // ส่ง api InventoryMovement
 export interface MovementData {
     inventory: string;         
-    movement_type: 'IN' | 'OUT'; 
+    movement_type: string; 
     quantity: number;          
     reason: string;         
     notes: string;             

@@ -3,7 +3,14 @@ import { useEffect, useState } from "react";
 import { fetchInventoryMovement, fetchInventory } from "../api/InventoryServices";
 import { InventoryMovement } from "@/types/types";
 
-export function MovementTable() {
+
+interface ProductTableProps {
+  limit?: number;
+  showActions?: boolean;
+  searchTerm?: string;
+}
+
+export function MovementTable({ limit, showActions = false, searchTerm }: ProductTableProps) {
   const [inventoryMovements, setInventoryMovements] = useState<InventoryMovement[]>([]);
 
   const fetchInventoryMovements = async () => {
@@ -20,6 +27,19 @@ export function MovementTable() {
       console.log(error);
     }
   };
+
+
+  const filteredInventoryMovement = inventoryMovements
+  .filter((item) => {
+    const product = item.inventory.product.product;
+    const searchTermLower = (searchTerm || "").toLowerCase();
+
+    return (
+      (product?.name?.toLowerCase().includes(searchTermLower) || 
+       product?.code?.toLowerCase().includes(searchTermLower))  // เพิ่มเงื่อนไขการค้นหาด้วย code
+    )
+  })
+  .slice(0, limit ?? inventoryMovements.length); // ถ้า limit ไม่มีค่า ให้ใช้จำนวนสินค้าทั้งหมด
 
 
 
@@ -44,7 +64,7 @@ export function MovementTable() {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {inventoryMovements.map((movement) => (
+          {filteredInventoryMovement.map((movement) => (
             <tr key={movement._id} className="hover:bg-gray-50">
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="flex items-center">

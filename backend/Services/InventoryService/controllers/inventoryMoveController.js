@@ -8,7 +8,7 @@ const axios = require("axios");
 // ดึงรายการ InventoryMovement ทั้งหมด
 exports.getAllMovements = async (req, res) => {
   try {
-    const movements = await InventoryMovement.find();
+    const movements = await InventoryMovement.find().sort({ updated_at: -1 });
 
     // ดึงข้อมูลจาก API สำหรับแต่ละ movement
     const inventoryPromises = movements.map(async (movement) => {
