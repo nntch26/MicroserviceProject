@@ -1,9 +1,9 @@
 'use client';
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
 import { Package, AlertCircle, AlertTriangle, Tag } from "lucide-react";
 import { InventoryProducts, Category, Product } from "@/types/types";
-import { fetchInventoryProduct, fetchCategories } from "../api/InventoryServices";
+import { fetchInventoryProduct } from "../api/InventoryServices";
+import { fetchCategory } from "../api/productServices";
 import { fetchAllProduct } from "../api/productServices";
 
 
@@ -18,7 +18,7 @@ export function ProductSummary() {
     const stockData = await fetchInventoryProduct();
     setStocks(stockData);
 
-    const categoryData = await fetchCategories();
+    const categoryData = await fetchCategory();
     setCategories(categoryData);
     
     const productData = await fetchAllProduct();
