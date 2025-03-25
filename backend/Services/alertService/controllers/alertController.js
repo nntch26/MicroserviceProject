@@ -33,7 +33,7 @@ const sendMail = async (mail, message) => {
 
         const msg = {
             to: `${mail}`,
-            subject: "env test",
+            subject: "แจ้งเตือน",
             text: `${message}`
         }
         await transporter.sendMail(msg);

@@ -8,6 +8,8 @@ import { AllProducts } from "./pages/AllProducts";
 import { Categories } from "./pages/Categories";
 import { Inventory } from "./pages/Inventory";
 import { InventoryMovement } from "./pages/InventoryMovement";
+import { LowStock } from "./pages/LowStock";
+import { OutOfStock } from "./pages/OutOfStock";
 
 
 export default function Home() {
@@ -21,6 +23,10 @@ export default function Home() {
         return <Categories/>
       case "inventory":
         return <Inventory/>
+      case "low-stock":
+        return <LowStock/>
+      case "out-of-stock":
+        return <OutOfStock/>
 
       case "inventory-movement":
           return <InventoryMovement/>

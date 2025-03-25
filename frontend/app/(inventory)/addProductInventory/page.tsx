@@ -21,33 +21,37 @@ const AddProduct = () => {
   };
 
 
-  // Handle submit to create inventory
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (!selectedProduct || quantity <= 0) {
-      alert('Please select a product and enter quantity');
+      alert('กรุณาเลือกสินค้าและกรอกปริมาณที่ถูกต้อง');
       return;
     }
-
+  
+    if (quantity <= 10) {
+      alert('ไม่สามารถเพิ่มได้ เพราะจำนวนต้องไม่น้อยกว่าหรือเท่ากับ 10');
+      return;
+    }
+  
     const inventoryData = {
       productId: selectedProduct,
       quantity: quantity
     };
-
+  
     try {
       const response = await AddInventoryPrduct(inventoryData);
-
+  
       if (response) {
         setQuantity(0);
         setSelectedProduct('');
-        alert('Inventory added successfully!');
+        alert('✅ Inventory added successfully!');
       } else {
-        alert('Failed to add inventory');
+        alert('❌ Failed to add inventory');
       }
     } catch (error) {
       console.error('Error adding to inventory:', error);
-      alert('Failed to add inventory');
+      alert('❌ Failed to add inventory');
     }
   };
 
@@ -76,7 +80,7 @@ const AddProduct = () => {
                 required
                 value={selectedProduct}
                 onChange={(e) => setSelectedProduct(e.target.value)}
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md border-solid border-1"
               >
                 <option value="">Select a product</option>
                 {products.map((product) => (
@@ -96,7 +100,6 @@ const AddProduct = () => {
                 id="quantity"
                 name="quantity"
                 required
-                value={quantity}
                 onChange={(e) => setQuantity(Number(e.target.value))}
                 min="0"
                 className="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
