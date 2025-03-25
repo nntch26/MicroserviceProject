@@ -47,7 +47,7 @@ export function ProductSummary() {
 
       <SummaryCard
         title="Low Stock Items"
-        value={stocks.filter((p) => p.quantity_in_stock < 10 && p.quantity_in_stock != 0).length.toString()}
+        value={stocks.filter((p) => p.quantity_in_stock <= 10 && p.quantity_in_stock != 0).length.toString()}
         icon={<AlertTriangle size={24} className="text-amber-500" />}
       />
 
