@@ -135,7 +135,7 @@ const checkAlertExists = async (code) => {
     const response = await axios.get(`http://localhost:3002/alert/getstock?code=${code}`);
     return response.data.length > 0; // ถ้ามี alert อยู่แล้ว return true
   } catch (error) {
-    console.error(`❌ Failed to check alert for product ${code}:`, error.message);
+    console.error(`Failed to check alert for product ${code}:`, error.message);
     return false; // ถ้ามีข้อผิดพลาดให้ return false
   }
 };
@@ -156,9 +156,9 @@ const sendLowStockAlerts = async (inventoryList) => {
               code: inventoryItem.product.product.code,
               stock: inventoryItem.quantity_in_stock,
             });
-            console.log(`✅ Alert sent for product ${inventoryItem.product.product.code}`);
+            console.log(`Alert sent for product ${inventoryItem.product.product.code}`);
           } else {
-            console.log(`⚠️ Alert already exists for product ${inventoryItem.product.product.code}`);
+            console.log(` Alert already exists for product ${inventoryItem.product.product.code}`);
           }
         } catch (alertError) {
           console.error(`❌ Failed to send alert for product ${inventoryItem.product.product.code}:`, alertError.message);

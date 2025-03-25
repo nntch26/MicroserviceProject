@@ -9,8 +9,8 @@ interface SidebarProps {
 
 export function Sidebar({ activePage, setActivePage, sidebarOpen }: SidebarProps) {
   const [expandedCategories, setExpandedCategories] = useState<{ [key: string]: boolean }>({
-    products: true,
-    inventory: false
+    products: false,
+    inventory: true
   });
 
   const toggleCategory = (category: string) => {

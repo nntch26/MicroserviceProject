@@ -12,6 +12,9 @@ export function InventoryMovement() {
   const [selectedCategory, setSelectedCategory] = useState("");
 
 
+  
+
+
 
   return (
     <div className="space-y-6">
@@ -21,10 +24,10 @@ export function InventoryMovement() {
           <p className="text-gray-600 mt-1">Manage your Inventory Movements</p>
         </div>
 
-        <Link href="/addProductInventory">
+        <Link href="/movement/createmovement">
           <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-indigo-700 cursor-pointer">
             <Plus size={20} />
-            Add Item
+            Create
           </button>
         </Link>
       </div>
@@ -40,7 +43,7 @@ export function InventoryMovement() {
               />
               <input
                 type="text"
-                placeholder="Search products..."
+                placeholder="Search inventory movements..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

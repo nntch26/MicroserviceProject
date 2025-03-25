@@ -1,29 +1,41 @@
 const mongoose = require("mongoose");
 
 const InventoryMovementSchema = new mongoose.Schema({
-  product: {
+  inventory: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Product", 
+    ref: "Inventory", 
     required: true
   },
   movement_type: {
     type: String,
-    enum: ["ADD", "REMOVE", "TRANSFER"], // การเคลื่อนไหวประเภทต่าง ๆ
+    enum: ['IN', 'OUT'], // การเคลื่อนไหวประเภทต่าง ๆ
     required: true
   },
   quantity: { // จำนวนที่ลดหรือเพิ่ม
     type: Number,
     required: true,
   },
-  source: {
-    type: String,
-    required: false, // ต้นทาง
+
+  reason: {
+    type: String, 
+    required: true // เช่น PURCHASE, SALE, RETURN
   },
-  destination: {
+
+  notes: {
     type: String,
-    required: false, //  ปลายทาง (สถานที่ที่สินค้าไป)
+    required: false // หมายเหตุเพิ่มเติม
   },
- 
+
+  performedBy: {
+    type: String, 
+    required: true // ใครเป็นคนทำรายการ 
+  },
+
+  balanceAfter: {
+    type: Number,
+    required: true 
+  },
+  
   updated_at: {
     type: Date,
     default: Date.now

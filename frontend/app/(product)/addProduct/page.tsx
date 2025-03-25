@@ -4,7 +4,7 @@ import { Category } from '@/types/types';
 import React, { useState, useEffect } from 'react';
 
 const AddProduct = () => {
-  // State for form fields
+  
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [category, setCategory] = useState('');
@@ -161,7 +161,8 @@ const AddProduct = () => {
           </div>
         </form>
       </div>
-    </div></>
+    </div>
+    </>
   );
 };
 

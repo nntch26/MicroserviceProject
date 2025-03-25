@@ -12,7 +12,6 @@ export interface Product {
     category: Category;
     price: number;
     last_updated: string;
-    __v: number;
 }
 
 // ส่ง api product
@@ -44,3 +43,27 @@ export interface ProductInventoryData {
     productId: string;
     quantity: number;
 }
+
+// inventory movement
+export interface InventoryMovement{
+    _id: string; 
+    inventory: InventoryProducts
+    movement_type: 'IN' | 'OUT';
+    quantity: number;  
+    reason: string; 
+    notes: string;
+    performedBy: string;  
+    balanceAfter: number;
+    updated_at: string;  
+}
+
+// ส่ง api InventoryMovement
+export interface MovementData {
+    inventory: string;         
+    movement_type: 'IN' | 'OUT'; 
+    quantity: number;          
+    reason: string;         
+    notes: string;             
+    performedBy: string;       
+  }
+  

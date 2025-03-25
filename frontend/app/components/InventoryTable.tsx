@@ -115,14 +115,14 @@ export function InventoryTable({
                   <td className="px-6 py-4 whitespace-nowrap">{product.category?.name}</td>
                   <td className="px-6 py-4 whitespace-nowrap">${product.price?.toFixed(2)}</td>
                   <td className="px-6 py-4 whitespace-nowrap">{item.quantity_in_stock}</td>
-                  <td className={`px-6 py-4 whitespace-nowrap text-center ${statusClass}`}>
+                  <td className={`px-6 py-4 whitespace-nowrap font-medium text-center ${statusClass}`}>
                     {displayStatus}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-center">
                     {new Date(item.last_updated).toLocaleString("th-TH", { timeZone: "Asia/Bangkok" })}
                   </td>
                   {showActions && (
-                    <td className="px-6 py-4 whitespace-nowrap text-right">
+                    <td className="px-6 py-4 whitespace-nowrap text-right ">
                       <button onClick={() => handleDelete(item._id)} className="text-red-600 hover:text-red-900">
                         <Trash2 size={16} />
                       </button>
