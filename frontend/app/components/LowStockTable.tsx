@@ -15,7 +15,7 @@ export function LowStockTable({
     const fetchData = async () => {
       try {
         const resInventory = await fetchInventoryProduct();
-        const lowStockItems = resInventory.filter((item: InventoryProducts) => item.quantity_in_stock < 10 && item.quantity_in_stock != 0);
+        const lowStockItems = resInventory.filter((item: InventoryProducts) => item.quantity_in_stock <= 10 && item.quantity_in_stock != 0);
         setInventory(lowStockItems);
       } catch (error) {
         console.error("Error fetching inventory API:", error);

@@ -54,7 +54,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Menu, Bell, User, Package, X, Trash2 } from "lucide-react";
+import { Menu, Bell, User, Package, X, Trash2 , AlertCircle, AlertTriangle, Tag } from "lucide-react";
 
 interface NavbarProps {
   sidebarOpen: boolean;
@@ -129,7 +129,7 @@ export function Navbar({ sidebarOpen, setSidebarOpen }: NavbarProps) {
 
           {/* Dropdown Notification */}
           {dropdownOpen && (
-            <div className="absolute right-0 mt-36 mr-14 w-80 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
+            <div className="absolute right-0 mt-44 mr-14 w-96 bg-white shadow-lg rounded-lg border border-gray-200 z-50">
               <div className="flex justify-between items-center px-4 py-2 border-b bg-gray-100">
                 <h3 className="text-sm font-semibold text-gray-700">Notifications</h3>
                 <button onClick={() => setDropdownOpen(false)}>
@@ -143,8 +143,13 @@ export function Navbar({ sidebarOpen, setSidebarOpen }: NavbarProps) {
                 ) : (
                   alerts.map((alert) => (
                     <div key={alert._id} className="px-4 py-3 border-b last:border-none flex items-center justify-between">
-                      <div>
-                        <span className="text-sm font-medium text-gray-900">{alert.message}</span>
+                      <div >
+                        <div className="flex justify-items-center space-x-2 mb-3 items-center">
+                          <div className="flex-shrink-0 h-10 w-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                            <AlertCircle size={24} className="text-red-500" />
+                          </div>
+                          <span className="text-sm font-medium text-gray-900">{alert.message}</span>
+                        </div>
                         <span className="text-xs text-gray-500 block">Code: {alert.code} | Stock: {alert.stock}</span>
                       </div>
                       <button

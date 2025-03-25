@@ -8,9 +8,10 @@ interface ProductTableProps {
   limit?: number;
   showActions?: boolean;
   searchTerm?: string;
+  selectedCategory?:string
 }
 
-export function MovementTable({ limit, showActions = false, searchTerm }: ProductTableProps) {
+export function MovementTable({ limit, showActions = false, searchTerm, selectedCategory }: ProductTableProps) {
   const [inventoryMovements, setInventoryMovements] = useState<InventoryMovement[]>([]);
 
   const fetchInventoryMovements = async () => {
@@ -36,8 +37,9 @@ export function MovementTable({ limit, showActions = false, searchTerm }: Produc
 
     return (
       (product?.name?.toLowerCase().includes(searchTermLower) || 
-       product?.code?.toLowerCase().includes(searchTermLower))  // เพิ่มเงื่อนไขการค้นหาด้วย code
-    )
+       product?.code?.toLowerCase().includes(searchTermLower)) && // เพิ่มเงื่อนไขการค้นหาด้วย code
+      (selectedCategory ? product?.category?.name === selectedCategory : true)
+    );
   })
   .slice(0, limit ?? inventoryMovements.length); // ถ้า limit ไม่มีค่า ให้ใช้จำนวนสินค้าทั้งหมด
 

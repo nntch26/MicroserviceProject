@@ -4,6 +4,7 @@ import { InventoryTable } from "../components/InventoryTable";
 import Link from 'next/link';
 import { Category } from "@/types/types";
 import { MovementTable } from "../components/MovementTable";
+import { fetchCategory } from "../api/productServices";
 
 export function InventoryMovement() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,8 +12,20 @@ export function InventoryMovement() {
   const [selectedCategory, setSelectedCategory] = useState("");
 
 
+  // ดึงข้อมูลหมวดหมู่
+  const fetchCategories = async () => {
+    try {
+      const response = await fetchCategory();
+      console.log("Category fetch data:", response);
+      setCategories(response);
+    } catch (error) {
+      console.log("Error fetching categories:", error);
+    }
+  };
   
-
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
 
   return (
@@ -62,7 +75,7 @@ export function InventoryMovement() {
             </select>
           </div>
         </div>
-        <MovementTable searchTerm={searchTerm} showActions={true} />        
+        <MovementTable searchTerm={searchTerm} showActions={true} selectedCategory={selectedCategory} />        
       </div>
     </div>
   );
