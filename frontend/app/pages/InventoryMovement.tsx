@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Plus, Search } from "lucide-react";
 import { InventoryTable } from "../components/InventoryTable";
 import Link from 'next/link';
-import { fetchCategories } from "../api/InventoryServices";
 import { Category } from "@/types/types";
 import { MovementTable } from "../components/MovementTable";
 

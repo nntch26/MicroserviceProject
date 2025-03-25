@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Plus, Search } from "lucide-react";
 import Link from 'next/link';
-import { fetchCategories } from "../api/InventoryServices";
 import { Category } from "@/types/types";
 import { LowStockTable } from "../components/LowStockTable";
+import { fetchCategory } from "../api/productServices";
 
 export function LowStock() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,7 +12,7 @@ export function LowStock() {
 
   useEffect(() => {
     const getCategories = async () => {
-      const data = await fetchCategories();
+      const data = await fetchCategory();
       setCategories(data);
     };
     getCategories();
