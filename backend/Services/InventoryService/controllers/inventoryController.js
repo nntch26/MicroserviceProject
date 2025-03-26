@@ -12,7 +12,6 @@ exports.getAllInventory = async (req, res) => {
     const getAllinventory = await Promise.all(
       inventory.map(async (item) => {
         try {
-          // ตรวจสอบว่า item.product เป็น ObjectId และไม่เป็น null
           if (item.product) {
             const productData = await axios.get(`http://localhost:3001/products/${item.product}`);
             return { ...item._doc, product: productData.data }; // เพิ่มข้อมูล product เข้าไป
