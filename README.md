@@ -13,15 +13,19 @@ https://youtu.be/8Kki0WWHeP4?si=Ilb7zXirgBNrepG6
 
 ## เทคโนโลยีที่ใช้
 ### Frontend
-Next.js - React Framework สำหรับการสร้างเว็บแอปพลิเคชัน
-TypeScript - Superset ของ JavaScript ที่เพิ่ม Type Safety
-TailwindCSS - สำหรับการจัดการ Style
+- Next.js React Framework สำหรับการสร้างเว็บแอปพลิเคชัน
+
+- TypeScript Superset ของ JavaScript ที่เพิ่ม Type Safety
+
+- TailwindCSS สำหรับการจัดการ Style
+
 ### Backend
-Node.js - JavaScript Runtime
-Express - Web Framework สำหรับ Node.js
-JWT - สำหรับการยืนยันตัวตนผู้ใช้
+- Node.js JavaScript Runtime
+- 
+- Express  Web Framework สำหรับ Node.js
+
 ### Database
-MongoDB - NoSQL Database
+- MongoDB  NoSQL Database
 
 ## หน้าเว็บไซต์
 ![image](https://github.com/user-attachments/assets/3dfd5501-edc7-4b6a-9806-b35936e6e6e1)
